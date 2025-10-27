@@ -1,4 +1,4 @@
-import type { GameMode, PhraseEntry, Question } from "@/types";
+import type { GameMode, PhraseEntry, Question, Definition } from "@/types";
 import { sampleSize, shuffleArray } from "@/lib/utils";
 
 const CACHE: Record<GameMode, PhraseEntry[] | null> = {
@@ -38,23 +38,32 @@ export async function generateQuestionBatch(mode: GameMode): Promise<Question[]>
   const selectedEntries = sampleSize(entries, QUESTIONS_PER_BATCH);
 
   return selectedEntries.map<Question>((entry: PhraseEntry, index: number) => {
-    const distractors = sampleSize(
-      entries.filter((candidate: PhraseEntry) => candidate.term !== entry.term),
-      DISTRACTOR_COUNT
-    );
+    // Her entry'nin definitions array'inden rastgele bir tanım seç
+    const selectedDefinition: Definition = sampleSize(entry.definitions, 1)[0];
 
+    // Diğer entries'lerden rastgele tanımlar seç (çeldiriciler için)
+    const otherEntries = entries.filter((e: PhraseEntry) => e.text !== entry.text);
+    const distractorEntries = sampleSize(otherEntries, DISTRACTOR_COUNT);
+    
+    // Her distractor entry'den rastgele bir tanım seç
+    const distractors = distractorEntries.map((e: PhraseEntry) => {
+      const randomDef: Definition = sampleSize(e.definitions, 1)[0];
+      return randomDef.definition;
+    });
+
+    // Şıkları karıştır
     const options = shuffleArray([
-      entry.meaning,
-      ...distractors.map((d: PhraseEntry) => d.meaning)
+      selectedDefinition.definition,
+      ...distractors
     ]);
 
     return {
       id: `${mode}-${Date.now()}-${index}`,
-      term: entry.term,
-      meaning: entry.meaning,
+      text: entry.text,
+      definition: selectedDefinition.definition,
       options,
-      correctAnswer: entry.meaning,
-      example: entry.example,
+      correctAnswer: selectedDefinition.definition,
+      example: selectedDefinition.example,
       mode
     };
   });

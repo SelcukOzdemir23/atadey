@@ -1,23 +1,31 @@
 export type GameMode = "atasozu" | "deyim";
+export type GameFormat = "mistakes" | "questions";
+
+export interface Definition {
+  id: number;
+  definition: string;
+  example: string;
+}
 
 export interface PhraseEntry {
-  term: string;
-  meaning: string;
-  example?: string;
+  text: string;
+  definitions: Definition[];
 }
 
 export interface Question {
   id: string;
-  term: string;
-  meaning: string;
+  text: string;
+  definition: string;
   options: string[];
   correctAnswer: string;
-  example?: string;
+  example: string;
   mode: GameMode;
 }
 
-export interface HighScoreEntry {
-  name: string;
+export interface GameResult {
   score: number;
+  total: number;
+  mode: GameMode;
+  format: GameFormat;
   timestamp: number;
 }

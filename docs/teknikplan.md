@@ -16,14 +16,36 @@ Bu doküman, projenin Minimum Uygulanabilir Ürün (MVP) sürümünün teknik mi
 Oyunun hızı için CSV dosyaları doğrudan tarayıcıda işlenmeyecektir. Tek seferlik bir hazırlık adımı uygulanacaktır.
 
 * **Girdi:** `data/atasozleri.csv`, `data/deyimler.csv`
-* **Script:** Proje kök dizininde `veri-isleyici.js` (veya `.py`) adında bir script oluşturulacak.
+* **Script:** Proje içinde Jupyter Notebook (`csv_to_json_converter.ipynb`) veya Python scripti kullanılacak.
 * **İşlem:** Bu script çalıştırıldığında:
     1.  İki CSV dosyasını okuyacak.
-    2.  Her bir satırı bir JSON objesine dönüştürecek (örn: `{ "id": 1, "soru": "Aba vakti...", "anlam": "Her şey zamanında..." }`).
-    3.  Tüm objeleri bir dizi (array) içine alacak.
+    2.  Her bir satırı işleyerek, aynı atasözü/deyim metnine sahip tüm kayıtları gruplandıracak.
+    3.  Her grup için bir JSON objesi oluşturacak:
+        ```json
+        {
+          "text": "Atasözü/deyim metni",
+          "definitions": [
+            {
+              "id": 1,
+              "definition": "İlk anlam",
+              "example": "İlk örnek"
+            },
+            {
+              "id": 2,
+              "definition": "İkinci anlam (varsa)",
+              "example": "İkinci örnek"
+            }
+          ]
+        }
+        ```
+    4.  Tüm objeleri bir dizi (array) içine alacak.
 * **Çıktı:** İki optimize edilmiş JSON dosyası:
-    1.  `public/atasozleri.json`
-    2.  `public/deyimler.json`
-* **Neden `public` Klasörü?** Vite, `public` klasöründeki dosyaları bundle'a dahil etmez, doğrudan `dist` klasörüne kopyalar. Bu, `fetch('./atasozleri.json')` gibi basit bir komutla dosyaları çağırmamıza olanak tanır.
+    1.  `public/data/atasozleri.json`
+    2.  `public/data/deyimler.json`
+* **Neden `public` Klasörü?** Vite, `public` klasöründeki dosyaları bundle'a dahil etmez, doğrudan `dist` klasörüne kopyalar. Bu, `fetch('./data/atasozleri.json')` gibi basit bir komutla dosyaları çağırmamıza olanak tanır.
+* **Neden Bu Yapı?** Gerçek veri setinde birçok atasözü/deyimin birden fazla anlamı ve kullanım örneği vardır. Bu yapı sayesinde:
+    - Her atasözü/deyim tekrar etmez, `definitions` dizisi içinde farklı anlamları barındırır.
+    - Oyun sırasında her kayıttan rastgele bir anlam seçilir, bu da soru çeşitliliğini artırır.
+    - Kullanıcıya yanlış cevap verdiğinde seçilen spesifik anlam gösterilebilir.
 
 ## 3. Proje Yapısı (Vite)

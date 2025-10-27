@@ -7,20 +7,19 @@ import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
   {
-    ignores: ["dist"]
+    ignores: ["dist", "node_modules"]
   },
   {
-    files: ["**/*.{ts,tsx}"]
-  },
-  {
+    files: ["**/*.{ts,tsx}"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
       globals: globals.browser,
       parser: tsparser,
       parserOptions: {
-        project: true,
-        tsconfigRootDir: import.meta.dirname
+        ecmaFeatures: {
+          jsx: true
+        }
       }
     },
     plugins: {
@@ -32,7 +31,12 @@ export default [
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": "error"
+      "react-refresh/only-export-components": [
+        "warn",
+        { allowConstantExport: true }
+      ],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "no-undef": "off" // TypeScript handles this
     }
   }
 ];

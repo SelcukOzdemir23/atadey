@@ -30,12 +30,34 @@ Bu MVP, "backendless" (sunucusuz) bir mimari üzerine kuruludur ve hız ile basi
     1.  `atasozleri.json` (kaynak: `atasozleri.csv`)
     2.  `deyimler.json` (kaynak: `deyimler.csv`)
     Bu dosyalar, bir kerelik lokal bir script ile CSV'den JSON'a dönüştürülecektir.
+    
+    **JSON Yapısı:** Her kayıt aşağıdaki formattadır:
+    ```json
+    {
+      "text": "Atasözü veya deyim metni",
+      "definitions": [
+        {
+          "id": 1,
+          "definition": "Anlamı/açıklaması",
+          "example": "Kullanım örneği"
+        },
+        {
+          "id": 2,
+          "definition": "Alternatif anlam (varsa)",
+          "example": "Başka bir örnek"
+        }
+      ]
+    }
+    ```
+    Bu yapı sayesinde birden fazla anlam ve örneği olan atasözleri/deyimler doğru şekilde temsil edilir.
+    
 * **Veri Akışı (Lazy Loading - Gecikmeli Yükleme):**
     1.  Kullanıcı siteyi açtığında, `index.html` ve `app.js` (React kodu) anında yüklenir. *Bu aşamada 20.000'lik veri yüklenmez.*
     2.  Kullanıcıya Ana Ekran (mod seçimi) *anında* gösterilir.
     3.  Kullanıcı örn. "Atasözü Oyna" butonuna tıklar.
     4.  Uygulama, **o anda** "Oyun Yükleniyor..." ekranı gösterir ve *sadece* `fetch('./atasozleri.json')` komutunu çalıştırır.
     5.  İlgili veri (atasözleri) tarayıcının belleğine alınır ve oyun başlar. Diğer veri (`deyimler.json`) gereksiz yere indirilmemiş olur.
+    6.  Oyun sırasında, her kayıttan rastgele bir anlam (`definitions` dizisinden) seçilir ve soruya dönüştürülür.
 * **Mimari:** Tamamen İstemci Taraflı (Client-Side Rendering). Tüm oyun mantığı, soru seçimi ve çeldirici üretimi kullanıcının tarayıcısında (JavaScript ile) çalışır.
 
 ---
