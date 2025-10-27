@@ -5,7 +5,7 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/deyimatasozoyunu/',
+  base: '/deyimatas-z-game/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
