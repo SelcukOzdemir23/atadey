@@ -1,6 +1,6 @@
 # Atasözü ve Deyim Oyunu (Vite + React)
 
-Bu klasör, mevcut Next.js uygulamasındaki arayüz ve oyun deneyimini birebir koruyarak, tamamen istemci taraflı çalışan Vite + React sürümünü içerir. Film replikleri yerine statik JSON dosyalarından yüklenen atasözü ve deyim verileri kullanılır.
+Bu klasör, mevcut Next.js uygulamasındaki arayüz ve oyun deneyimini birebir koruyarak, tamamen istemci taraflı çalışan Vite + React sürümünü içerir. Film replikleri yerine statik JSON dosyalarından yüklenen atasözü ve deyim verileri kullanılır
 
 ## Başlangıç
 
