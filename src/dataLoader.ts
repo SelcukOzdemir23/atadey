@@ -7,8 +7,8 @@ const CACHE: Record<GameMode, PhraseEntry[] | null> = {
 };
 
 const DATA_URL: Record<GameMode, string> = {
-  atasozu: "/data/atasozleri.json",
-  deyim: "/data/deyimler.json"
+  atasozu: `${import.meta.env.BASE_URL}data/atasozleri.json`,
+  deyim: `${import.meta.env.BASE_URL}data/deyimler.json`
 };
 
 const QUESTIONS_PER_BATCH = 10;

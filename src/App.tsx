@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
+const LOGO_URL = `${import.meta.env.BASE_URL}damla_arkaplan.png`;
+
 const MAX_MISTAKES = 5;
 const MAX_QUESTIONS = 10;
 
@@ -254,7 +256,7 @@ function App(): JSX.Element {
           <CardHeader className="pb-4">
             <div className="flex flex-col items-center space-y-3 pt-4">
               <img 
-                src="/damla_arkaplan.png" 
+                src={LOGO_URL}
                 alt="Damla Logo" 
                 className="h-16 w-16 animate-float sm:h-20 sm:w-20 drop-shadow-2xl object-contain"
               />
@@ -351,13 +353,13 @@ function App(): JSX.Element {
         <div className="glass-card p-12 rounded-3xl shadow-2xl animate-bounce-in">
           <div className="relative">
             <img 
-              src="/damla_arkaplan.png" 
+              src={LOGO_URL}
               alt="Damla Logo" 
               className="h-20 w-20 mx-auto animate-pulse object-contain"
             />
             <div className="absolute inset-0 animate-ping">
               <img 
-                src="/damla_arkaplan.png" 
+                src={LOGO_URL}
                 alt="Damla Logo" 
                 className="h-20 w-20 mx-auto opacity-75 object-contain"
               />
@@ -383,7 +385,7 @@ function App(): JSX.Element {
           <div className="flex justify-center mb-4">
             <div className="bg-red-100 p-4 rounded-full">
               <img 
-                src="/damla_arkaplan.png" 
+                src={LOGO_URL}
                 alt="Error" 
                 className="h-16 w-16 object-contain opacity-50"
               />
@@ -514,7 +516,7 @@ function App(): JSX.Element {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <img 
-          src="/damla_arkaplan.png" 
+          src={LOGO_URL}
           alt="Damla Logo" 
           className="h-16 w-16 animate-pulse object-contain"
         />
