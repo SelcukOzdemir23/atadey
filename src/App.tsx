@@ -257,7 +257,7 @@ function App(): JSX.Element {
           description: "Sonuç görseli panonuza kopyalandı. Artık paylaşabilirsiniz!",
           duration: 3000,
         });
-      } catch (clipboardError) {
+      } catch {
         // Fallback: Download the image if clipboard fails
         const link = document.createElement('a');
         link.download = `deyim-atasozu-sonuc-${Date.now()}.png`;

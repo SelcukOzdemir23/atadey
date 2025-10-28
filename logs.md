@@ -71,10 +71,10 @@ Test komutları ve dokümantasyon
 Yeni scriptler:
 ```json
 {
-  "dev": "vitest",              // Test watch modu
-  "dev:app": "vite",            // Dev server
+  "dev": "vite",                // Dev server (normal geliştirme)
+  "build": "tsc --noEmit && vite build",
   "test": "vitest run",         // Tek seferlik test
-  "test:watch": "vitest",       // Watch modu
+  "test:watch": "vitest",       // Test watch modu
   "test:ui": "vitest --ui",     // UI arayüzü
   "test:coverage": "vitest run --coverage"
 }
@@ -150,6 +150,13 @@ Build Süresi: ~3s
      * `environment: 'jsdom'` → `'happy-dom'`
      * Clipboard mock: `Object.assign()` → `Object.defineProperty()` (happy-dom navigator read-only)
 
+9. **ESLint Errors (5 errors)**
+   - `src/test/setup.ts`: Unused parameters `_text`, `_data` → Parametreleri kaldırıldı
+   - `src/App.tsx`: Unused `clipboardError` → `catch` bloğu parametresiz yapıldı
+   - `src/hooks/use-toast.ts`: `actionTypes` unused → `eslint-disable` eklendi (sadece type için kullanılıyor)
+   - `src/components/ui/sidebar.tsx`: Duplicate `SidebarContext` → Type'ı `SidebarContextValue` olarak rename edildi
+   - Sonuç: ✅ 0 error, 12 warnings (warnings UI library'den, sorun değil)
+
 ### 🔒 CI/CD Güvenliği
 - ❌ Test başarısız → Deploy edilmez
 - ❌ Lint hatası → Deploy edilmez
@@ -174,12 +181,11 @@ coverage: {
 
 ### 🚀 Kullanım
 ```bash
-npm test              # Tek seferlik test
-npm run test:watch    # Watch modu
-npm run test:ui       # Görsel arayüz
+npm run dev        # Vite dev server (http://localhost:5173)
+npm test           # Tek seferlik test
+npm run test:watch # Test watch modu
+npm run test:ui    # Görsel test arayüzü
 npm run test:coverage # Coverage raporu
-npm run dev           # Test watch (varsayılan dev)
-npm run dev:app       # Uygulama dev server
 ```
 
 ### ✨ Önemli Notlar

@@ -29,10 +29,10 @@ Object.defineProperty(window, 'matchMedia', {
 Object.defineProperty(navigator, 'clipboard', {
   writable: true,
   value: {
-    writeText: async (_text: string) => {
+    writeText: async () => {
       return Promise.resolve();
     },
-    write: async (_data: ClipboardItem[]) => {
+    write: async () => {
       return Promise.resolve();
     },
   },
