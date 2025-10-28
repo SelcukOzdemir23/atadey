@@ -32,6 +32,15 @@ const DIRECTION_LABELS: Record<GameDirection, string> = {
   reverse: "Ters Mod"
 };
 
+// Footer Component
+const Footer = () => (
+  <footer className="fixed bottom-0 left-0 right-0 py-2 text-center pointer-events-none">
+    <p className="text-xs text-gray-400/50 font-light">
+      Geliştirici: Müşerref Selçuk ÖZDEMİR
+    </p>
+  </footer>
+);
+
 function App(): JSX.Element {
   const { toast } = useToast();
   
@@ -423,6 +432,7 @@ function App(): JSX.Element {
           Oyuna Başla
         </Button>
       </div>
+      <Footer />
     </main>
     );
   }
@@ -454,6 +464,7 @@ function App(): JSX.Element {
             <div className="w-3 h-3 bg-pink-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -481,6 +492,7 @@ function App(): JSX.Element {
             Yeniden Dene
           </Button>
         </Card>
+        <Footer />
       </div>
     );
   }
@@ -602,19 +614,23 @@ function App(): JSX.Element {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
     );
   }
 
   if (!currentQuestion || !activeMode || !activeDirection) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <img 
-          src={LOGO_URL}
-          alt="Damla Logo" 
-          className="h-16 w-16 animate-pulse object-contain"
-        />
-      </div>
+      <>
+        <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+          <img 
+            src={LOGO_URL}
+            alt="Damla Logo" 
+            className="h-16 w-16 animate-pulse object-contain"
+          />
+        </div>
+        <Footer />
+      </>
     );
   }
 
@@ -664,6 +680,8 @@ function App(): JSX.Element {
           isGameEnding={isGameEnding}
         />
       )}
+      
+      <Footer />
     </main>
   );
 }
