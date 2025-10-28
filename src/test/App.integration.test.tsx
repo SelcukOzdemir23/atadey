@@ -140,7 +140,7 @@ describe('App Integration Tests', () => {
     it('should render menu screen on initial load', () => {
       render(<App />);
       
-      expect(screen.getByText('Atasözleri & Deyimler')).toBeInTheDocument();
+      expect(screen.getByText('AtaDey')).toBeInTheDocument();
     });
 
     it('should show category selection buttons', () => {

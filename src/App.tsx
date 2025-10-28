@@ -6,7 +6,7 @@ import { generateQuestionBatch } from "@/dataLoader";
 import { cn } from "@/lib/utils";
 import type { GameMode, GameFormat, GameDirection, Question } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { GameHeader } from "@/components/game/shared/GameHeader";
 import { TextToMeaningMode } from "@/components/game/modes/TextToMeaningMode";
@@ -294,20 +294,21 @@ function App(): JSX.Element {
           <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{ animationDelay: '4s' }}></div>
         </div>
 
-        <Card className="glass-card relative w-full max-w-xl border-white/40 shadow-2xl animate-bounce-in z-10">
+        <div className="w-full max-w-xl space-y-4 z-10">
+          <Card className="glass-card relative border-white/40 shadow-2xl animate-bounce-in">
           <CardHeader className="pb-4">
             <div className="flex flex-col items-center space-y-3 pt-4">
               <img 
                 src={LOGO_URL}
-                alt="Damla Logo" 
+                alt="AtaDey Logo" 
                 className="h-16 w-16 animate-float sm:h-20 sm:w-20 drop-shadow-2xl object-contain"
               />
               <h1 className="text-center">
                 <span className="block bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-4xl drop-shadow-sm">
-                  Atasözleri & Deyimler
+                  AtaDey
                 </span>
                 <span className="block mt-1 text-base font-medium text-indigo-600/80">
-                  Bilgini Test Et
+                  Atasözleri & Deyimler Oyunu
                 </span>
               </h1>
             </div>
@@ -411,17 +412,18 @@ function App(): JSX.Element {
               </div>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-center px-6 pb-6">
-            <Button
-              onClick={startGame}
-              size="lg"
-              className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-base font-bold h-12 hover:scale-[1.02] transition-all duration-200 ease-out shadow-xl shadow-purple-500/50 hover:shadow-2xl hover:shadow-purple-600/50"
-            >
-              Oyuna Başla
-            </Button>
-          </CardFooter>
         </Card>
-      </main>
+        
+        {/* Start Button - Görselin Dışında */}
+        <Button
+          onClick={startGame}
+          size="lg"
+          className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white text-base font-bold h-12 hover:scale-[1.02] transition-all duration-200 ease-out shadow-xl shadow-purple-500/50 hover:shadow-2xl hover:shadow-purple-600/50"
+        >
+          Oyuna Başla
+        </Button>
+      </div>
+    </main>
     );
   }
 
@@ -498,26 +500,27 @@ function App(): JSX.Element {
           <div className="absolute top-60 right-1/3 w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.6s' }}></div>
         </div>
 
-        <Card ref={resultCardRef} className="glass-card w-full max-w-lg text-center shadow-2xl border-white/40 animate-bounce-in z-10">
-          <CardHeader className="pb-4">
-            <div className="flex items-center justify-center mb-2">
-              <Award className="h-16 w-16 text-yellow-500 animate-pulse drop-shadow-lg" />
-            </div>
-            <CardTitle className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Tebrikler! 🎉
-            </CardTitle>
-            <CardDescription className="text-base font-medium text-indigo-600">
-              {FORMAT_LABELS[activeFormat!]}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6 px-6">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
-              <div className="relative bg-gradient-to-br from-indigo-100 to-purple-100 p-8 rounded-2xl">
-                <p className="text-7xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
-                  {score}
-                </p>
-                <p className="text-sm font-semibold text-indigo-600 mt-2">Doğru Cevap ✨</p>
+        <div className="w-full max-w-lg space-y-4 z-10">
+          <Card ref={resultCardRef} className="glass-card text-center shadow-2xl border-white/40 animate-bounce-in">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-center mb-2">
+                <Award className="h-16 w-16 text-yellow-500 animate-pulse drop-shadow-lg" />
+              </div>
+              <CardTitle className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                Tebrikler! 🎉
+              </CardTitle>
+              <CardDescription className="text-base font-medium text-indigo-600">
+                {FORMAT_LABELS[activeFormat!]}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 px-6 pb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
+                <div className="relative bg-gradient-to-br from-indigo-100 to-purple-100 p-8 rounded-2xl">
+                  <p className="text-7xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent animate-pulse">
+                    {score}
+                  </p>
+                  <p className="text-sm font-semibold text-indigo-600 mt-2">Doğru Cevap ✨</p>
               </div>
             </div>
             
@@ -555,48 +558,51 @@ function App(): JSX.Element {
               </div>
             )}
           </CardContent>
-          <CardFooter className="flex flex-col gap-3 px-6 pb-8">
+        </Card>
+
+        {/* Action Buttons - Görselin Dışında */}
+        <div className="flex flex-col gap-3 w-full">
+          <Button
+            onClick={shareResult}
+            size="lg"
+            variant="outline"
+            disabled={isSharing}
+            className="w-full border-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-400 hover:text-indigo-800 hover:scale-105 transition-all duration-200 font-semibold h-12 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur"
+          >
+            {isSharing ? (
+              <>
+                <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                Görsel Hazırlanıyor...
+              </>
+            ) : (
+              <>
+                <Share2 className="mr-2 h-5 w-5" />
+                Görseli Paylaş
+              </>
+            )}
+          </Button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
             <Button
-              onClick={shareResult}
+              onClick={restartGame}
+              size="lg"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold h-12 hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              <RefreshCw className="mr-2 h-5 w-5" />
+              Tekrar
+            </Button>
+            <Button
+              onClick={returnToMenu}
               size="lg"
               variant="outline"
-              disabled={isSharing}
-              className="w-full border-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-400 hover:text-indigo-800 hover:scale-105 transition-all duration-200 font-semibold h-12 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full border-2 border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400 hover:text-purple-800 font-semibold h-12 hover:scale-105 transition-all duration-200 bg-white/80 backdrop-blur"
             >
-              {isSharing ? (
-                <>
-                  <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                  Görsel Hazırlanıyor...
-                </>
-              ) : (
-                <>
-                  <Share2 className="mr-2 h-5 w-5" />
-                  Görseli Paylaş
-                </>
-              )}
+              <Home className="mr-2 h-5 w-5" />
+              Ana Menü
             </Button>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              <Button
-                onClick={restartGame}
-                size="lg"
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold h-12 hover:scale-105 transition-all duration-200 shadow-lg"
-              >
-                <RefreshCw className="mr-2 h-5 w-5" />
-                Tekrar
-              </Button>
-              <Button
-                onClick={returnToMenu}
-                size="lg"
-                variant="outline"
-                className="w-full border-2 border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400 hover:text-purple-800 font-semibold h-12 hover:scale-105 transition-all duration-200"
-              >
-                <Home className="mr-2 h-5 w-5" />
-                Ana Menü
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
-      </main>
+          </div>
+        </div>
+      </div>
+    </main>
     );
   }
 
