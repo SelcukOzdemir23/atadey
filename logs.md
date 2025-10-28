@@ -136,6 +136,12 @@ Build Süresi: ~3s
    - Çözüm: `/// <reference types="vitest" />` direktifi
    - Not: IDE'de hata gösterebilir ama runtime çalışıyor
 
+8. **GitHub Actions Node.js Environment**
+   - Sorun: `webidl-conversions` modülü `WeakMap` bulamıyor (CI ortamında)
+   - Hata: `TypeError: Cannot read properties of undefined (reading 'get')`
+   - Çözüm: `beforeAll()` hook'unda global polyfill eklendi
+   - Eklenen: `global.WeakMap`, `global.Map`, `global.Set`
+
 ### 🔒 CI/CD Güvenliği
 - ❌ Test başarısız → Deploy edilmez
 - ❌ Lint hatası → Deploy edilmez
