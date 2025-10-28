@@ -32,9 +32,9 @@ const DIRECTION_LABELS: Record<GameDirection, string> = {
   reverse: "Ters Mod"
 };
 
-// Footer Component
+// Footer Component - Hidden on mobile for better UX
 const Footer = () => (
-  <footer className="fixed bottom-0 left-0 right-0 py-2 text-center pointer-events-none">
+  <footer className="hidden sm:block fixed bottom-0 left-0 right-0 py-2 text-center pointer-events-none">
     <p className="text-xs text-gray-400/50 font-light">
       Geliştirici: Müşerref Selçuk ÖZDEMİR
     </p>
