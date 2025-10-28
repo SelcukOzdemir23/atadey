@@ -1,23 +1,6 @@
-import { expect, afterEach, beforeAll } from 'vitest';
+import { expect, afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
-
-// Polyfill for global objects needed by jsdom in Node.js environment
-beforeAll(() => {
-  // Ensure global WeakMap exists (needed by webidl-conversions)
-  if (typeof global.WeakMap === 'undefined') {
-    global.WeakMap = WeakMap;
-  }
-  
-  // Ensure other global constructors exist
-  if (typeof global.Map === 'undefined') {
-    global.Map = Map;
-  }
-  
-  if (typeof global.Set === 'undefined') {
-    global.Set = Set;
-  }
-});
 
 // Extend Vitest's expect with jest-dom matchers
 expect.extend(matchers);
@@ -43,8 +26,9 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock Clipboard API
-Object.assign(navigator, {
-  clipboard: {
+Object.defineProperty(navigator, 'clipboard', {
+  writable: true,
+  value: {
     writeText: async (_text: string) => {
       return Promise.resolve();
     },

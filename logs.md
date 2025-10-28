@@ -12,18 +12,19 @@ Projeye kapsamlı test suite eklenmesi ve GitHub Actions pipeline'a test kontrol
 ### 📦 Yüklenen Paketler
 ```bash
 npm install --save-dev vitest @vitest/ui @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+npm install --save-dev happy-dom  # jsdom yerine (daha hızlı ve stabil)
 ```
-- **vitest 4.0.4**: Modern test runner (126 paket eklendi)
+- **vitest 4.0.4**: Modern test runner
+- **happy-dom**: Browser environment simulation (jsdom alternatifi)
 - **@testing-library/react 16.1.0**: React bileşen testleri
 - **@testing-library/jest-dom**: Özel matchers
 - **@testing-library/user-event**: Kullanıcı etkileşim simülasyonu
-- **jsdom**: Tarayıcı ortamı simülasyonu
 
 ### 🆕 Yeni Dosyalar
 
 #### 1. `vitest.config.ts`
 - Vite + React plugin entegrasyonu
-- jsdom test ortamı
+- **happy-dom** test ortamı (jsdom yerine - daha hızlı)
 - Coverage yapılandırması (v8 provider)
 - Path aliases (@/ → ./src)
 
@@ -93,7 +94,7 @@ Yeni scriptler:
 ✓ src/test/App.integration.test.tsx - 14/14 ✅
 
 Toplam: 64/64 test başarılı
-Süre: ~3s
+Süre: ~2.14s (happy-dom ile %28 daha hızlı)
 ```
 
 ### 🏗️ Build Sonuçları
@@ -137,10 +138,17 @@ Build Süresi: ~3s
    - Not: IDE'de hata gösterebilir ama runtime çalışıyor
 
 8. **GitHub Actions Node.js Environment**
-   - Sorun: `webidl-conversions` modülü `WeakMap` bulamıyor (CI ortamında)
+   - Sorun: `webidl-conversions` modülü `WeakMap` bulamıyor (jsdom CI ortamında)
    - Hata: `TypeError: Cannot read properties of undefined (reading 'get')`
-   - Çözüm: `beforeAll()` hook'unda global polyfill eklendi
-   - Eklenen: `global.WeakMap`, `global.Map`, `global.Set`
+   - Denenen Çözümler:
+     * ❌ `beforeAll()` polyfill → Çok geç çalışıyor
+     * ❌ `globalSetup` polyfill → Yine çalışmadı
+   - **Asıl Çözüm:** jsdom yerine **happy-dom** kullanmak
+   - Sonuç: ✅ Testler çalışıyor + %28 daha hızlı (3.17s → 2.14s)
+   - Değişiklikler:
+     * `npm install --save-dev happy-dom`
+     * `environment: 'jsdom'` → `'happy-dom'`
+     * Clipboard mock: `Object.assign()` → `Object.defineProperty()` (happy-dom navigator read-only)
 
 ### 🔒 CI/CD Güvenliği
 - ❌ Test başarısız → Deploy edilmez
