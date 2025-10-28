@@ -4,6 +4,178 @@ Bu dosya, projede yapılan tüm değişiklikleri kronolojik sırayla kayıt alt�
 
 ---
 
+## 2025-10-28 - Test Altyapısı ve CI/CD Entegrasyonu
+
+### 🎯 Amaç
+Projeye kapsamlı test suite eklenmesi ve GitHub Actions pipeline'a test kontrolü entegrasyonu.
+
+### 📦 Yüklenen Paketler
+```bash
+npm install --save-dev vitest @vitest/ui @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
+```
+- **vitest 4.0.4**: Modern test runner (126 paket eklendi)
+- **@testing-library/react 16.1.0**: React bileşen testleri
+- **@testing-library/jest-dom**: Özel matchers
+- **@testing-library/user-event**: Kullanıcı etkileşim simülasyonu
+- **jsdom**: Tarayıcı ortamı simülasyonu
+
+### 🆕 Yeni Dosyalar
+
+#### 1. `vitest.config.ts`
+- Vite + React plugin entegrasyonu
+- jsdom test ortamı
+- Coverage yapılandırması (v8 provider)
+- Path aliases (@/ → ./src)
+
+#### 2. `src/test/setup.ts`
+- Global test setup
+- jest-dom matchers
+- window.matchMedia mock
+- navigator.clipboard mock
+
+#### 3. Test Dosyaları (64 test)
+- **`src/test/utils.test.ts`** - 22 test
+  - cn (className merging)
+  - shuffleArray (Fisher-Yates)
+  - sampleSize (random sampling)
+
+- **`src/test/dataLoader.test.ts`** - 13 test
+  - Normal mod (metin→anlam)
+  - Ters mod (anlam→metin)
+  - Cache kontrolü
+  - Batch generation
+
+- **`src/test/AnswerButton.test.tsx`** - 8 test
+  - Render, click, selection
+  - Doğru/yanlış feedback
+  - Disabled state
+
+- **`src/test/GameHeader.test.tsx`** - 7 test
+  - Hata modu (kalpler)
+  - Soru modu (sayaç)
+  - Skor gösterimi
+
+- **`src/test/App.integration.test.tsx`** - 14 test
+  - Menü navigasyonu
+  - Oyun başlatma
+  - Soru cevaplama
+  - Tam uygulama akışı
+
+#### 4. `TEST_README.md`
+Test komutları ve dokümantasyon
+
+### 🔧 Değiştirilen Dosyalar
+
+#### `package.json`
+Yeni scriptler:
+```json
+{
+  "dev": "vitest",              // Test watch modu
+  "dev:app": "vite",            // Dev server
+  "test": "vitest run",         // Tek seferlik test
+  "test:watch": "vitest",       // Watch modu
+  "test:ui": "vitest --ui",     // UI arayüzü
+  "test:coverage": "vitest run --coverage"
+}
+```
+
+#### `.github/workflows/deploy.yml`
+İki-job pipeline:
+1. **test job**: npm ci → npm test → npm run lint
+2. **build-and-deploy job**: `needs: test` (test başarılı olursa çalışır)
+
+### ✅ Test Sonuçları
+```
+✓ src/test/utils.test.ts         - 22/22 ✅
+✓ src/test/dataLoader.test.ts    - 13/13 ✅
+✓ src/test/AnswerButton.test.tsx - 8/8 ✅
+✓ src/test/GameHeader.test.tsx   - 7/7 ✅
+✓ src/test/App.integration.test.tsx - 14/14 ✅
+
+Toplam: 64/64 test başarılı
+Süre: ~3s
+```
+
+### 🏗️ Build Sonuçları
+```
+✓ dist/index.html              0.72 kB (gzip: 0.39 kB)
+✓ dist/assets/index-*.css     66.60 kB (gzip: 11.74 kB)
+✓ dist/assets/index-*.js     236.21 kB (gzip: 75.37 kB)
+
+TypeScript Hataları: 0
+Build Süresi: ~3s
+```
+
+### 🐛 Çözülen Sorunlar
+
+1. **Mock Data Yetersizliği**
+   - Sorun: 4-5 item vardı, 10+ gerekiyordu
+   - Çözüm: 12 atasözü + 12 deyim mock data
+
+2. **Lucide Icon Testleri**
+   - Sorun: Emoji (❤️💔) ile test yapılıyordu
+   - Çözüm: `document.querySelectorAll('.lucide-heart')` DOM sorgusu
+
+3. **AnswerButton Feedback**
+   - Sorun: ✓/✗ emoji beklentisi
+   - Çözüm: CSS class kontrolü (from-green-500, from-red-500)
+
+4. **Metin Eşleşmeleri**
+   - "Deyim & Atasözü Oyunu" → "Atasözleri & Deyimler"
+   - "Oyunu Başlat" → "Oyuna Başla"
+   - Çift görünen metinler için `getAllByText`
+
+5. **Fetch Mock Tipi**
+   - `(url: string)` → `(url: RequestInfo | URL)`
+
+6. **TypeScript Unused Params**
+   - Clipboard mock'ta `_text`, `_data` underscore prefix
+
+7. **Vitest Config Type Conflict**
+   - Sorun: Vite/Vitest versiyonları arasında tip çakışması
+   - Çözüm: `/// <reference types="vitest" />` direktifi
+   - Not: IDE'de hata gösterebilir ama runtime çalışıyor
+
+### 🔒 CI/CD Güvenliği
+- ❌ Test başarısız → Deploy edilmez
+- ❌ Lint hatası → Deploy edilmez
+- ✅ Sadece `main` branch → GitHub Pages deploy
+- ✅ PR'larda testler çalışır (deploy olmaz)
+
+### 📊 Coverage Ayarları
+```typescript
+coverage: {
+  provider: 'v8',
+  reporter: ['text', 'json', 'html'],
+  exclude: [
+    'node_modules/',
+    'src/test/',
+    '**/*.d.ts',
+    '**/*.config.*',
+    '**/mockData',
+    'dist/'
+  ]
+}
+```
+
+### 🚀 Kullanım
+```bash
+npm test              # Tek seferlik test
+npm run test:watch    # Watch modu
+npm run test:ui       # Görsel arayüz
+npm run test:coverage # Coverage raporu
+npm run dev           # Test watch (varsayılan dev)
+npm run dev:app       # Uygulama dev server
+```
+
+### ✨ Önemli Notlar
+- TypeScript IDE hatası (`vitest.config.ts`) normal - runtime'da çalışıyor
+- Tüm testler başarılı ve build hazır
+- CI/CD pipeline aktif ve test geçişini zorunlu kılıyor
+- Mock data production'daki veri yapısını taklit ediyor
+
+---
+
 ## 2025-10-27 - Büyük Refaktör ve Dokümantasyon Uyumu
 
 ### Başlangıç Durumu

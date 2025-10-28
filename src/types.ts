@@ -1,5 +1,6 @@
 export type GameMode = "atasozu" | "deyim";
 export type GameFormat = "mistakes" | "questions";
+export type GameDirection = "forward" | "reverse"; // forward: text→meaning, reverse: meaning→text
 
 export interface Definition {
   id: number;
@@ -20,6 +21,7 @@ export interface Question {
   correctAnswer: string;
   example: string;
   mode: GameMode;
+  direction: GameDirection; // Hangi yönde oynanıyor
 }
 
 export interface GameResult {
@@ -27,5 +29,6 @@ export interface GameResult {
   total: number;
   mode: GameMode;
   format: GameFormat;
+  direction: GameDirection;
   timestamp: number;
 }

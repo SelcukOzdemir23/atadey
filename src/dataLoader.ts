@@ -1,4 +1,4 @@
-import type { GameMode, PhraseEntry, Question, Definition } from "@/types";
+import type { GameMode, GameDirection, PhraseEntry, Question, Definition } from "@/types";
 import { sampleSize, shuffleArray } from "@/lib/utils";
 
 const CACHE: Record<GameMode, PhraseEntry[] | null> = {
@@ -33,7 +33,7 @@ async function fetchEntries(mode: GameMode): Promise<PhraseEntry[]> {
   return data;
 }
 
-export async function generateQuestionBatch(mode: GameMode): Promise<Question[]> {
+export async function generateQuestionBatch(mode: GameMode, direction: GameDirection = "forward"): Promise<Question[]> {
   const entries = await fetchEntries(mode);
   const selectedEntries = sampleSize(entries, QUESTIONS_PER_BATCH);
 
@@ -41,31 +41,54 @@ export async function generateQuestionBatch(mode: GameMode): Promise<Question[]>
     // Her entry'nin definitions array'inden rastgele bir tanım seç
     const selectedDefinition: Definition = sampleSize(entry.definitions, 1)[0];
 
-    // Diğer entries'lerden rastgele tanımlar seç (çeldiriciler için)
-    const otherEntries = entries.filter((e: PhraseEntry) => e.text !== entry.text);
-    const distractorEntries = sampleSize(otherEntries, DISTRACTOR_COUNT);
-    
-    // Her distractor entry'den rastgele bir tanım seç
-    const distractors = distractorEntries.map((e: PhraseEntry) => {
-      const randomDef: Definition = sampleSize(e.definitions, 1)[0];
-      return randomDef.definition;
-    });
+    if (direction === "forward") {
+      // FORWARD MODE: Metin göster → Anlam seç
+      const otherEntries = entries.filter((e: PhraseEntry) => e.text !== entry.text);
+      const distractorEntries = sampleSize(otherEntries, DISTRACTOR_COUNT);
+      
+      const distractors = distractorEntries.map((e: PhraseEntry) => {
+        const randomDef: Definition = sampleSize(e.definitions, 1)[0];
+        return randomDef.definition;
+      });
 
-    // Şıkları karıştır
-    const options = shuffleArray([
-      selectedDefinition.definition,
-      ...distractors
-    ]);
+      const options = shuffleArray([
+        selectedDefinition.definition,
+        ...distractors
+      ]);
 
-    return {
-      id: `${mode}-${Date.now()}-${index}`,
-      text: entry.text,
-      definition: selectedDefinition.definition,
-      options,
-      correctAnswer: selectedDefinition.definition,
-      example: selectedDefinition.example,
-      mode
-    };
+      return {
+        id: `${mode}-${direction}-${Date.now()}-${index}`,
+        text: entry.text,
+        definition: selectedDefinition.definition,
+        options,
+        correctAnswer: selectedDefinition.definition,
+        example: selectedDefinition.example,
+        mode,
+        direction
+      };
+    } else {
+      // REVERSE MODE: Anlam göster → Metin seç
+      const otherEntries = entries.filter((e: PhraseEntry) => e.text !== entry.text);
+      const distractorEntries = sampleSize(otherEntries, DISTRACTOR_COUNT);
+      
+      const distractorTexts = distractorEntries.map((e: PhraseEntry) => e.text);
+
+      const options = shuffleArray([
+        entry.text,
+        ...distractorTexts
+      ]);
+
+      return {
+        id: `${mode}-${direction}-${Date.now()}-${index}`,
+        text: selectedDefinition.definition, // Anlam gösteriliyor
+        definition: selectedDefinition.definition,
+        options, // Metin seçenekleri
+        correctAnswer: entry.text, // Doğru metin
+        example: selectedDefinition.example,
+        mode,
+        direction
+      };
+    }
   });
 }
 

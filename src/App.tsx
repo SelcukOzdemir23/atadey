@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Heart, RefreshCw, Share2, Home, Award, TrendingUp } from "lucide-react";
+import { RefreshCw, Share2, Home, Award, TrendingUp } from "lucide-react";
+import { toPng } from "html-to-image";
 
 import { generateQuestionBatch } from "@/dataLoader";
 import { cn } from "@/lib/utils";
-import type { GameMode, GameFormat, Question } from "@/types";
+import type { GameMode, GameFormat, GameDirection, Question } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { GameHeader } from "@/components/game/shared/GameHeader";
+import { TextToMeaningMode } from "@/components/game/modes/TextToMeaningMode";
+import { MeaningToTextMode } from "@/components/game/modes/MeaningToTextMode";
 
 const LOGO_URL = `${import.meta.env.BASE_URL}damla_arkaplan.png`;
 
@@ -23,17 +27,24 @@ const FORMAT_LABELS: Record<GameFormat, string> = {
   questions: "10 Soru Testi"
 };
 
+const DIRECTION_LABELS: Record<GameDirection, string> = {
+  forward: "Normal Mod",
+  reverse: "Ters Mod"
+};
+
 function App(): JSX.Element {
   const { toast } = useToast();
   
   // Menu State
   const [selectedMode, setSelectedMode] = useState<GameMode>("atasozu");
   const [selectedFormat, setSelectedFormat] = useState<GameFormat>("mistakes");
+  const [selectedDirection, setSelectedDirection] = useState<GameDirection>("forward");
   
   // Game State
   const [gameState, setGameState] = useState<"menu" | "loading" | "playing" | "finished">("menu");
   const [activeMode, setActiveMode] = useState<GameMode | null>(null);
   const [activeFormat, setActiveFormat] = useState<GameFormat | null>(null);
+  const [activeDirection, setActiveDirection] = useState<GameDirection | null>(null);
   
   // Question State
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -51,11 +62,13 @@ function App(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
   const [errorLoadingQuestions, setErrorLoadingQuestions] = useState<string | null>(null);
   const [animateKey, setAnimateKey] = useState(0);
+  const [isSharing, setIsSharing] = useState(false);
 
   const isFetching = useRef(false);
+  const resultCardRef = useRef<HTMLDivElement>(null);
 
   const fetchAndSetQuestions = useCallback(
-    async (mode: GameMode, append = false) => {
+    async (mode: GameMode, direction: GameDirection, append = false) => {
       if (isFetching.current) return;
       isFetching.current = true;
 
@@ -65,7 +78,7 @@ function App(): JSX.Element {
       }
 
       try {
-        const batch = await generateQuestionBatch(mode);
+        const batch = await generateQuestionBatch(mode, direction);
         setQuestions((prev) => (append ? [...prev, ...batch] : batch));
         if (!append) {
           setCurrentQuestionIndex(0);
@@ -90,22 +103,23 @@ function App(): JSX.Element {
   );
 
   useEffect(() => {
-    if (gameState === "playing" && questions.length === 0 && activeMode && !isFetching.current) {
-      void fetchAndSetQuestions(activeMode);
+    if (gameState === "playing" && questions.length === 0 && activeMode && activeDirection && !isFetching.current) {
+      void fetchAndSetQuestions(activeMode, activeDirection);
     }
-  }, [activeMode, fetchAndSetQuestions, gameState, questions.length]);
+  }, [activeMode, activeDirection, fetchAndSetQuestions, gameState, questions.length]);
 
   useEffect(() => {
     if (
       gameState === "playing" &&
       activeMode &&
+      activeDirection &&
       questions.length > 0 &&
       currentQuestionIndex >= questions.length - 5 &&
       !isFetching.current
     ) {
-      void fetchAndSetQuestions(activeMode, true);
+      void fetchAndSetQuestions(activeMode, activeDirection, true);
     }
-  }, [activeMode, currentQuestionIndex, fetchAndSetQuestions, gameState, questions.length]);
+  }, [activeMode, activeDirection, currentQuestionIndex, fetchAndSetQuestions, gameState, questions.length]);
 
   // Start game handler
   const startGame = useCallback(() => {
@@ -118,11 +132,12 @@ function App(): JSX.Element {
     setErrorLoadingQuestions(null);
     setActiveMode(selectedMode);
     setActiveFormat(selectedFormat);
+    setActiveDirection(selectedDirection);
     setGameState("loading");
-    void fetchAndSetQuestions(selectedMode).then(() => {
+    void fetchAndSetQuestions(selectedMode, selectedDirection).then(() => {
       setGameState("playing");
     });
-  }, [fetchAndSetQuestions, selectedMode, selectedFormat]);
+  }, [fetchAndSetQuestions, selectedMode, selectedFormat, selectedDirection]);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -166,11 +181,12 @@ function App(): JSX.Element {
     setCurrentQuestionIndex((prev) => prev + 1);
 
     // Pre-fetch more questions if needed (for mistakes mode)
-    if (activeFormat === "mistakes" && currentQuestionIndex + 1 >= questions.length - 5) {
-      void fetchAndSetQuestions(activeMode, true);
+    if (activeFormat === "mistakes" && activeDirection && currentQuestionIndex + 1 >= questions.length - 5) {
+      void fetchAndSetQuestions(activeMode, activeDirection, true);
     }
   }, [
     activeMode,
+    activeDirection,
     activeFormat,
     currentQuestion,
     currentQuestionIndex,
@@ -211,35 +227,61 @@ function App(): JSX.Element {
     setGameState("playing");
   }, []);
 
-  // Share result
-  const shareResult = useCallback(() => {
-    const modeLabel = MODE_LABELS[activeMode || "atasozu"];
-    const formatLabel = FORMAT_LABELS[activeFormat || "mistakes"];
-    
-    let shareText = "";
-    if (activeFormat === "mistakes") {
-      shareText = `${modeLabel} oyununda ${formatLabel}'nde ${score} doğru yaptım! Sen de dene: ${window.location.href}`;
-    } else {
-      shareText = `${modeLabel} oyununda ${formatLabel}'nde ${MAX_QUESTIONS} soruda ${score} doğru yaptım! Sen de dene: ${window.location.href}`;
-    }
+  // Share result as PNG
+  const shareResult = useCallback(async () => {
+    if (!resultCardRef.current) return;
 
-    navigator.clipboard.writeText(shareText)
-      .then(() => {
-        toast({
-          title: "Kopyalandı!",
-          description: "Sonuç panonuza kopyalandı.",
-          duration: 2000,
-        });
-      })
-      .catch(() => {
-        toast({
-          title: "Hata",
-          description: "Sonuç kopyalanamadı.",
-          variant: "destructive",
-          duration: 2000,
-        });
+    setIsSharing(true);
+
+    try {
+      const dataUrl = await toPng(resultCardRef.current, {
+        quality: 1,
+        pixelRatio: 2,
+        cacheBust: true,
       });
-  }, [activeMode, activeFormat, score, toast]);
+
+      // Convert data URL to blob
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+
+      // Try to copy to clipboard (works on most modern browsers)
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            'image/png': blob
+          })
+        ]);
+
+        toast({
+          title: "✅ Görsel Kopyalandı!",
+          description: "Sonuç görseli panonuza kopyalandı. Artık paylaşabilirsiniz!",
+          duration: 3000,
+        });
+      } catch (clipboardError) {
+        // Fallback: Download the image if clipboard fails
+        const link = document.createElement('a');
+        link.download = `deyim-atasozu-sonuc-${Date.now()}.png`;
+        link.href = dataUrl;
+        link.click();
+
+        toast({
+          title: "📥 Görsel İndirildi!",
+          description: "Sonuç görseli indirildi. Dosyalarınızdan paylaşabilirsiniz!",
+          duration: 3000,
+        });
+      }
+    } catch (error) {
+      console.error('Görsel oluşturma hatası:', error);
+      toast({
+        title: "Hata",
+        description: "Görsel oluşturulamadı. Lütfen tekrar deneyin.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    } finally {
+      setIsSharing(false);
+    }
+  }, [toast]);
 
   // MENU SCREEN
   if (gameState === "menu") {
@@ -272,10 +314,10 @@ function App(): JSX.Element {
           </CardHeader>
           <CardContent className="px-6 pb-6">
             <p className="text-center text-muted-foreground text-sm leading-relaxed mb-5">
-              Kategori ve oyun tipini seçerek başlayın
+              Kategori, oyun tipi ve modu seçerek başlayın
             </p>
             
-            {/* Kategori ve Oyun Tipi Grid Layout */}
+            {/* Kategori, Oyun Tipi ve Mod Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Kategori */}
               <div className="space-y-2">
@@ -326,11 +368,47 @@ function App(): JSX.Element {
               </div>
             </div>
 
+            {/* Oyun Modu - Yeni Eklendi */}
+            <div className="mt-5">
+              <p className="text-sm font-semibold text-foreground mb-2">
+                Oyun Modu
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {(Object.keys(DIRECTION_LABELS) as GameDirection[]).map((direction) => (
+                  <Button
+                    key={direction}
+                    variant={selectedDirection === direction ? "default" : "outline"}
+                    onClick={() => setSelectedDirection(direction)}
+                    className={cn(
+                      "w-full transition-all duration-200 ease-out font-medium h-11",
+                      selectedDirection === direction 
+                        ? "bg-gradient-to-r from-green-600 to-teal-600 text-white shadow-lg shadow-green-500/50 scale-[1.02]" 
+                        : "border-2 border-gray-200 text-gray-700 hover:border-green-300 hover:bg-green-50/50 hover:text-green-800 hover:scale-[1.01]"
+                    )}
+                  >
+                    <span className="text-sm">
+                      {direction === "forward" ? "📝 " : "🔄 "}
+                      {DIRECTION_LABELS[direction]}
+                    </span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+
             {/* Info Box */}
             <div className="mt-4 text-xs text-center text-indigo-700 bg-indigo-50 p-2.5 rounded-lg border border-indigo-200">
-              {selectedFormat === "mistakes" 
-                ? "5 yanlış yapana kadar devam et" 
-                : "10 soru cevapla ve skorunu gör"}
+              <div className="font-semibold mb-1">
+                {selectedDirection === "forward" ? "📝 Normal Mod" : "🔄 Ters Mod"}
+              </div>
+              <div>
+                {selectedDirection === "forward" 
+                  ? "Metin gösterilir, anlam seçilir" 
+                  : "Anlam gösterilir, metin seçilir"}
+                {" • "}
+                {selectedFormat === "mistakes" 
+                  ? "5 yanlış hakkı" 
+                  : "10 soru"}
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex justify-center px-6 pb-6">
@@ -420,7 +498,7 @@ function App(): JSX.Element {
           <div className="absolute top-60 right-1/3 w-3 h-3 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.6s' }}></div>
         </div>
 
-        <Card className="glass-card w-full max-w-lg text-center shadow-2xl border-white/40 animate-bounce-in z-10">
+        <Card ref={resultCardRef} className="glass-card w-full max-w-lg text-center shadow-2xl border-white/40 animate-bounce-in z-10">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-center mb-2">
               <Award className="h-16 w-16 text-yellow-500 animate-pulse drop-shadow-lg" />
@@ -482,16 +560,26 @@ function App(): JSX.Element {
               onClick={shareResult}
               size="lg"
               variant="outline"
-              className="w-full border-2 border-indigo-300 hover:bg-indigo-50 hover:border-indigo-400 hover:scale-105 transition-all duration-300 font-semibold h-12"
+              disabled={isSharing}
+              className="w-full border-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-400 hover:text-indigo-800 hover:scale-105 transition-all duration-200 font-semibold h-12 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Share2 className="mr-2 h-5 w-5" />
-              Sonucu Paylaş
+              {isSharing ? (
+                <>
+                  <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
+                  Görsel Hazırlanıyor...
+                </>
+              ) : (
+                <>
+                  <Share2 className="mr-2 h-5 w-5" />
+                  Görseli Paylaş
+                </>
+              )}
             </Button>
-            <div className="grid grid-cols-2 gap-3 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
               <Button
                 onClick={restartGame}
                 size="lg"
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 font-semibold h-12 hover:scale-105 transition-all duration-300 shadow-lg"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold h-12 hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <RefreshCw className="mr-2 h-5 w-5" />
                 Tekrar
@@ -500,7 +588,7 @@ function App(): JSX.Element {
                 onClick={returnToMenu}
                 size="lg"
                 variant="outline"
-                className="w-full border-2 border-purple-300 hover:bg-purple-50 hover:border-purple-400 font-semibold h-12 hover:scale-105 transition-all duration-300"
+                className="w-full border-2 border-purple-300 text-purple-700 hover:bg-purple-50 hover:border-purple-400 hover:text-purple-800 font-semibold h-12 hover:scale-105 transition-all duration-200"
               >
                 <Home className="mr-2 h-5 w-5" />
                 Ana Menü
@@ -512,7 +600,7 @@ function App(): JSX.Element {
     );
   }
 
-  if (!currentQuestion || !activeMode) {
+  if (!currentQuestion || !activeMode || !activeDirection) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <img 
@@ -524,6 +612,9 @@ function App(): JSX.Element {
     );
   }
 
+  const isGameEnding = (activeFormat === "mistakes" && mistakes >= MAX_MISTAKES - 1 && isAnswerCorrect === false) || 
+                       (activeFormat === "questions" && totalQuestions >= MAX_QUESTIONS - 1);
+
   // PLAYING SCREEN
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
@@ -533,125 +624,40 @@ function App(): JSX.Element {
         <div className="absolute bottom-20 left-20 w-64 h-64 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-float" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      <header className="mb-8 w-full max-w-2xl z-10">
-        <div className="glass-card rounded-2xl p-4 shadow-lg flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-xl font-bold text-lg shadow-md">
-              🎯 {score}
-            </div>
-            <span className="text-sm font-medium text-indigo-600">Doğru</span>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            {activeFormat === "mistakes" ? (
-              <>
-                <span className="text-sm font-medium text-muted-foreground mr-2">Can:</span>
-                {Array.from({ length: MAX_MISTAKES }).map((_, i) => (
-                  <Heart
-                    key={i}
-                    className={cn(
-                      "h-7 w-7 transition-all duration-300 drop-shadow-md",
-                      i < MAX_MISTAKES - mistakes 
-                        ? "text-red-500 fill-current heart-beat" 
-                        : "text-gray-300 fill-current opacity-40"
-                    )}
-                  />
-                ))}
-              </>
-            ) : (
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-xl font-bold text-lg shadow-md">
-                {totalQuestions}/{MAX_QUESTIONS}
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <GameHeader
+        score={score}
+        mistakes={mistakes}
+        totalQuestions={totalQuestions}
+        maxMistakes={MAX_MISTAKES}
+        maxQuestions={MAX_QUESTIONS}
+        activeFormat={activeFormat!}
+      />
 
-      <Card
-        key={`${animateKey}-${currentQuestion.id}`}
-        className="glass-card w-full max-w-2xl border-white/40 shadow-2xl animate-slide-up z-10"
-      >
-        <CardHeader className="pb-6">
-          <div className="flex items-center justify-center mb-4">
-            <div className="bg-gradient-to-r from-indigo-100 to-purple-100 px-4 py-2 rounded-full">
-              <span className="text-sm font-semibold text-indigo-700">
-                {MODE_LABELS[activeMode!]}
-              </span>
-            </div>
-          </div>
-          <CardTitle className="text-center text-2xl italic leading-relaxed font-bold text-indigo-900 sm:text-3xl px-4">
-            "{currentQuestion.text}"
-          </CardTitle>
-          <CardDescription className="pt-3 text-center text-indigo-600 font-medium">
-            🤔 Bu {MODE_LABELS[activeMode!].toLowerCase()} ne anlama gelir?
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 px-6 pb-6">
-          {currentQuestion.options.map((option) => {
-            const isCurrentSelected = selectedAnswer === option;
-            const isCorrectOption = option === currentQuestion.correctAnswer;
-
-            let customClasses = "transition-all duration-200 ease-out transform active:scale-95";
-            let buttonStyle = "";
-
-            if (showFeedback) {
-              if (isCurrentSelected) {
-                if (isAnswerCorrect) {
-                  customClasses += " success-pulse shadow-lg shadow-green-500/50";
-                  buttonStyle = "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-2 border-green-300";
-                } else {
-                  customClasses += " error-shake shadow-lg shadow-red-500/50";
-                  buttonStyle = "bg-gradient-to-r from-red-500 to-rose-500 text-white border-2 border-red-300";
-                }
-              } else if (isCorrectOption) {
-                customClasses += " animate-pulse";
-                buttonStyle = "bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-400 text-green-800";
-              } else {
-                customClasses += " opacity-50";
-                buttonStyle = "bg-gray-100 border border-gray-200 text-gray-400";
-              }
-            } else if (isCurrentSelected) {
-              customClasses += " scale-105";
-              buttonStyle = "bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-2 border-indigo-400 shadow-lg shadow-indigo-500/50";
-            } else {
-              buttonStyle = "bg-white border-2 border-gray-200 text-gray-700 font-medium hover:border-indigo-300 hover:bg-indigo-50/50 hover:text-indigo-800 hover:shadow-md hover:scale-[1.02]";
-            }
-
-            return (
-              <Button
-                key={option}
-                onClick={() => handleAnswer(option)}
-                disabled={showFeedback}
-                className={cn(
-                  "h-auto min-h-[4rem] w-full whitespace-normal py-4 px-4 text-left text-base rounded-xl font-medium",
-                  customClasses,
-                  buttonStyle
-                )}
-                variant="ghost"
-              >
-                {option}
-              </Button>
-            );
-          })}
-        </CardContent>
-        {showFeedback && (
-          <CardFooter className="flex flex-col items-center space-y-4 pt-5">
-            <p className={cn("text-xl font-semibold", isAnswerCorrect ? "text-accent" : "text-destructive")}
-            >
-              {isAnswerCorrect ? "Doğru cevap!" : `Yanlış! Doğru anlam: ${currentQuestion.definition}`}
-            </p>
-            {currentQuestion.example && (
-              <p className="text-center text-sm text-muted-foreground">Örnek: {currentQuestion.example}</p>
-            )}
-            <Button
-              onClick={handleNextQuestion}
-              className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto"
-            >
-              {mistakes >= MAX_MISTAKES - 1 && !isAnswerCorrect ? "Skoru Göster" : "Sonraki Soru"}
-            </Button>
-          </CardFooter>
-        )}
-      </Card>
+      {activeDirection === "forward" ? (
+        <TextToMeaningMode
+          question={currentQuestion}
+          selectedAnswer={selectedAnswer}
+          isAnswerCorrect={isAnswerCorrect}
+          showFeedback={showFeedback}
+          animateKey={animateKey}
+          modeLabel={MODE_LABELS[activeMode]}
+          onAnswer={handleAnswer}
+          onNext={handleNextQuestion}
+          isGameEnding={isGameEnding}
+        />
+      ) : (
+        <MeaningToTextMode
+          question={currentQuestion}
+          selectedAnswer={selectedAnswer}
+          isAnswerCorrect={isAnswerCorrect}
+          showFeedback={showFeedback}
+          animateKey={animateKey}
+          modeLabel={MODE_LABELS[activeMode]}
+          onAnswer={handleAnswer}
+          onNext={handleNextQuestion}
+          isGameEnding={isGameEnding}
+        />
+      )}
     </main>
   );
 }
