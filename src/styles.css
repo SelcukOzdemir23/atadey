@@ -63,9 +63,9 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 text-foreground;
+    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 text-foreground;
     min-height: 100vh;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Outfit', sans-serif;
   }
 }
 
@@ -88,25 +88,10 @@
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(79, 70, 229, 0.8), 0 0 60px rgba(79, 70, 229, 0.4);
-  }
-}
-
-@keyframes bounce-in {
+@keyframes scale-in {
   0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  70% {
     transform: scale(0.9);
+    opacity: 0;
   }
   100% {
     transform: scale(1);
@@ -139,8 +124,8 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-.animate-bounce-in {
-  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out;
 }
 
 .animate-slide-up {
@@ -157,14 +142,14 @@
 
 /* Gradient Button */
 .gradient-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   transition: all 0.3s ease;
 }
 
 .gradient-button:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
 }
 
 /* Success Animation */

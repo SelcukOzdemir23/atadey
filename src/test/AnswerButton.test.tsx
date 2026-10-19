@@ -42,7 +42,7 @@ describe('AnswerButton Component', () => {
       />
     );
     const button = screen.getByRole('button');
-    expect(button.className).toContain('from-green-500');
+    expect(button.className).toContain('bg-green-600');
   });
 
   it('should show error state with X when answer is wrong', () => {
@@ -55,7 +55,7 @@ describe('AnswerButton Component', () => {
       />
     );
     const button = screen.getByRole('button');
-    expect(button.className).toContain('from-red-500');
+    expect(button.className).toContain('bg-red-600');
   });
 
   it('should highlight correct answer when showFeedback is true', () => {
@@ -67,7 +67,7 @@ describe('AnswerButton Component', () => {
       />
     );
     const button = screen.getByRole('button');
-    expect(button.className).toContain('from-green-100');
+    expect(button.className).toContain('bg-green-100');
   });
 
   it('should be disabled when showFeedback is true', () => {

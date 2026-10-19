@@ -24,24 +24,24 @@ export function AnswerButton({
   if (showFeedback) {
     if (isSelected) {
       if (isCorrect) {
-        customClasses += " success-pulse shadow-lg shadow-green-500/50";
-        buttonStyle = "bg-gradient-to-r from-green-500 to-emerald-500 text-white border-2 border-green-300";
+        customClasses += " success-pulse shadow-lg shadow-green-500/40";
+        buttonStyle = "bg-green-600 text-white border border-green-300";
       } else {
-        customClasses += " error-shake shadow-lg shadow-red-500/50";
-        buttonStyle = "bg-gradient-to-r from-red-500 to-rose-500 text-white border-2 border-red-300";
+        customClasses += " error-shake shadow-lg shadow-red-500/40";
+        buttonStyle = "bg-red-600 text-white border border-red-300";
       }
     } else if (isCorrectOption) {
       customClasses += " animate-pulse";
-      buttonStyle = "bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-400 text-green-800";
+      buttonStyle = "bg-green-100 border border-green-200 text-green-800";
     } else {
       customClasses += " opacity-50";
       buttonStyle = "bg-gray-100 border border-gray-200 text-gray-400";
     }
   } else if (isSelected) {
     customClasses += " scale-105";
-    buttonStyle = "bg-gradient-to-r from-indigo-600 to-purple-600 text-white border-2 border-indigo-400 shadow-lg shadow-indigo-500/50";
+    buttonStyle = "bg-blue-600 text-white border border-blue-400 shadow-lg shadow-blue-500/40";
   } else {
-    buttonStyle = "bg-white border-2 border-gray-200 text-gray-700 font-medium hover:border-indigo-300 hover:bg-indigo-50/50 hover:text-indigo-800 hover:shadow-md hover:scale-[1.02]";
+    buttonStyle = "bg-white border border-gray-200 text-gray-700 font-medium hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-800 hover:shadow-md hover:scale-[1.02]";
   }
 
   return (

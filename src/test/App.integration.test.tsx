@@ -182,7 +182,7 @@ describe('App Integration Tests', () => {
       fireEvent.click(atasozuButton);
       
       // Button should be highlighted (you can check className changes)
-      expect(atasozuButton.className).toContain('from-indigo-600');
+      expect(atasozuButton.className).toContain('bg-blue-600');
     });
 
     it('should allow selecting deyim category', () => {
@@ -191,8 +191,8 @@ describe('App Integration Tests', () => {
       const deyimButton = screen.getByRole('button', { name: 'Deyim' });
       fireEvent.click(deyimButton);
       
-      // Should have a gradient after selection
-      expect(deyimButton.className).toContain('bg-gradient-to-r');
+      // Should have a solid blue background after selection
+      expect(deyimButton.className).toContain('bg-blue-600');
     });
   });
 

@@ -23,10 +23,10 @@ export function GameHeader({
     <header className="mb-6 sm:mb-8 w-full max-w-2xl z-10">
       <div className="glass-card rounded-2xl p-3 sm:p-4 shadow-lg flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-3">
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-base sm:text-lg shadow-md">
+          <div className="bg-blue-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-base sm:text-lg shadow-md">
             🎯 {score}
           </div>
-          <span className="text-xs sm:text-sm font-medium text-indigo-600">Doğru</span>
+          <span className="text-xs sm:text-sm font-medium text-blue-600">Doğru</span>
         </div>
         
         <div className="flex items-center gap-1 sm:gap-2">
@@ -46,7 +46,7 @@ export function GameHeader({
               ))}
             </>
           ) : (
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-base sm:text-lg shadow-md">
+            <div className="bg-blue-600 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-base sm:text-lg shadow-md">
               {totalQuestions}/{maxQuestions}
             </div>
           )}

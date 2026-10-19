@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ["Inter", "sans-serif"],
-        headline: ["Inter", "sans-serif"]
+        body: ["Outfit", "sans-serif"],
+        headline: ["Outfit", "sans-serif"]
       },
       colors: {
         background: "hsl(var(--background))",
