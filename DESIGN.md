@@ -66,8 +66,20 @@ is disabled under `prefers-reduced-motion: reduce`.
 
 ## Verification
 
-- `npx impeccable detect src/` → 0 anti-patterns, 0 advisories
-- `npm run build` → clean, `npm run test` → 64 passing
-- Detector only runs element-level rules (contrast, tiny text, tap targets) on a
-  parsed page; run `npx impeccable detect <built html>` with a Chromium available
-  for the full sweep.
+- `npx impeccable detect src/` → 0 anti-patterns, 0 advisories (source rules)
+- `npx impeccable detect http://localhost:5173/atadey/` with a Chromium-based
+  browser (`IMPECCABLE_BROWSER=/opt/helium-browser-bin/helium`) → `[]`, exit 0.
+  This run includes the element-level rules the source scan cannot do: contrast,
+  tiny text, tap targets, heading order and card nesting.
+- `npm run build` clean · `npm run test` 64 passing · `npm run lint` 0 errors
+
+Fixes this scan forced, worth keeping in mind when editing:
+
+- `--muted-foreground` is 20% 40%, not lighter: 45% measured 4.2:1 on the lightest
+  body tint and failed WCAG AA.
+- The menu's mode summary is a `border-t` divider, not a bordered box — a second
+  rounded surface inside `.glass-card` trips the nested-cards rule.
+- Correct answers fill `bg-green-700` (white text = 5.0:1); `green-600` is 3.3:1.
+
+URL scans render only the initial state (menu). The playing and result screens
+reuse the same tokens, so their contrast follows from the values measured here.

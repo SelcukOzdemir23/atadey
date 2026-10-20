@@ -406,7 +406,7 @@ function App(): JSX.Element {
             </div>
 
             {/* Info Box */}
-            <div className="mt-5 rounded-xl border border-border bg-secondary/60 px-4 py-3 text-center text-xs text-muted-foreground">
+            <div className="mt-5 border-t border-border pt-4 text-center text-xs text-muted-foreground">
               <div className="mb-1 font-semibold text-foreground">
                 {selectedDirection === "forward" ? "📝 Normal Mod" : "🔄 Ters Mod"}
               </div>

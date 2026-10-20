@@ -1,6 +1,7 @@
 /node_modules
 /coverage
 /dist
+/.freebuff
 
 # impeccable-ignore-start
 # Ephemeral output, runtime state, and per-dev overrides.

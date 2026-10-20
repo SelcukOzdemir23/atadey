@@ -42,7 +42,7 @@ describe('AnswerButton Component', () => {
       />
     );
     const button = screen.getByRole('button');
-    expect(button.className).toContain('bg-green-600');
+    expect(button.className).toContain('bg-green-700');
   });
 
   it('should show error state with X when answer is wrong', () => {

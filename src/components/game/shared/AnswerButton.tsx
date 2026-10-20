@@ -24,7 +24,7 @@ export function AnswerButton({
   if (showFeedback) {
     if (isSelected) {
       if (isCorrect) {
-        buttonStyle = "bg-green-600 text-white border border-green-700/30 shadow-sm";
+        buttonStyle = "bg-green-700 text-white border border-green-800/30 shadow-sm";
       } else {
         customClasses += " error-shake";
         buttonStyle = "bg-red-600 text-white border border-red-700/30 shadow-sm";
