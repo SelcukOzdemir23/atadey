@@ -37,8 +37,8 @@ describe('GameHeader Component', () => {
         />
       );
 
-      // Should show hearts with gray color (broken hearts)
-      const greyHearts = document.querySelectorAll('.text-gray-300');
+      // Lost hearts use the tinted blue token, never pure gray
+      const greyHearts = document.querySelectorAll('.text-blue-200');
       expect(greyHearts.length).toBeGreaterThanOrEqual(3);
     });
 

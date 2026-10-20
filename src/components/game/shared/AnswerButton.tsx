@@ -18,30 +18,27 @@ export function AnswerButton({
   showFeedback,
   onAnswer
 }: AnswerButtonProps) {
-  let customClasses = "transition-all duration-200 ease-out transform active:scale-95";
+  let customClasses = "transition-all duration-200 ease-out active:translate-y-px";
   let buttonStyle = "";
 
   if (showFeedback) {
     if (isSelected) {
       if (isCorrect) {
-        customClasses += " success-pulse shadow-lg shadow-green-500/40";
-        buttonStyle = "bg-green-600 text-white border border-green-300";
+        buttonStyle = "bg-green-600 text-white border border-green-700/30 shadow-sm";
       } else {
-        customClasses += " error-shake shadow-lg shadow-red-500/40";
-        buttonStyle = "bg-red-600 text-white border border-red-300";
+        customClasses += " error-shake";
+        buttonStyle = "bg-red-600 text-white border border-red-700/30 shadow-sm";
       }
     } else if (isCorrectOption) {
-      customClasses += " animate-pulse";
-      buttonStyle = "bg-green-100 border border-green-200 text-green-800";
+      buttonStyle = "bg-green-100 border border-green-300 text-green-900";
     } else {
-      customClasses += " opacity-50";
-      buttonStyle = "bg-gray-100 border border-gray-200 text-gray-400";
+      buttonStyle = "bg-muted border border-border text-muted-foreground opacity-60";
     }
   } else if (isSelected) {
-    customClasses += " scale-105";
-    buttonStyle = "bg-blue-600 text-white border border-blue-400 shadow-lg shadow-blue-500/40";
+    buttonStyle = "bg-blue-600 text-white border border-blue-700/30 shadow-sm";
   } else {
-    buttonStyle = "bg-white border border-gray-200 text-gray-700 font-medium hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-800 hover:shadow-md hover:scale-[1.02]";
+    buttonStyle =
+      "bg-card border border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:-translate-y-0.5 hover:shadow-sm";
   }
 
   return (
@@ -49,7 +46,7 @@ export function AnswerButton({
       onClick={() => onAnswer(option)}
       disabled={showFeedback}
       className={cn(
-        "h-auto min-h-[4rem] w-full whitespace-normal py-4 px-4 text-left text-base rounded-xl font-medium",
+        "h-auto min-h-[3.5rem] w-full whitespace-normal py-4 px-4 text-left text-base rounded-xl font-medium leading-relaxed",
         customClasses,
         buttonStyle
       )}

@@ -182,7 +182,7 @@ describe('App Integration Tests', () => {
       fireEvent.click(atasozuButton);
       
       // Button should be highlighted (you can check className changes)
-      expect(atasozuButton.className).toContain('bg-blue-600');
+      expect(atasozuButton.className).toContain('bg-primary');
     });
 
     it('should allow selecting deyim category', () => {
@@ -191,8 +191,8 @@ describe('App Integration Tests', () => {
       const deyimButton = screen.getByRole('button', { name: 'Deyim' });
       fireEvent.click(deyimButton);
       
-      // Should have a solid blue background after selection
-      expect(deyimButton.className).toContain('bg-blue-600');
+      // Selected state uses the primary design token
+      expect(deyimButton.className).toContain('bg-primary');
     });
   });
 

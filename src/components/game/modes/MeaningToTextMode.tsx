@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { AnswerButton } from "../shared/AnswerButton";
@@ -30,24 +30,24 @@ export function MeaningToTextMode({
   return (
     <Card
       key={`${animateKey}-${question.id}`}
-      className="glass-card w-full max-w-2xl border-white/30 shadow-lg animate-slide-up z-10"
+      className="glass-card w-full max-w-2xl animate-slide-up z-10"
     >
       <CardHeader className="pb-6">
         <div className="flex items-center justify-center mb-4">
-          <div className="bg-blue-100 px-4 py-2 rounded-full">
-            <span className="text-sm font-semibold text-blue-700">
-              {modeLabel} - Ters Mod
+          <div className="bg-primary/10 px-3 py-1.5 rounded-full">
+            <span className="text-sm font-semibold text-primary">
+              {modeLabel} · Ters Mod
             </span>
           </div>
         </div>
-        <CardTitle className="text-center text-xl leading-relaxed font-bold text-blue-900 sm:text-2xl md:text-3xl px-4">
-          "{question.text}"
-        </CardTitle>
-        <CardDescription className="pt-3 text-center text-blue-600 font-medium text-sm sm:text-base">
-          🔄 Bu anlam hangi {modeLabel.toLowerCase()}'e aittir?
+        <h2 className="px-4 text-center text-lg font-bold leading-relaxed text-foreground sm:text-xl md:text-2xl">
+          {question.text}
+        </h2>
+        <CardDescription className="pt-3 text-center text-muted-foreground font-medium text-base">
+          Bu anlam hangi {modeLabel.toLowerCase()}e ait?
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 px-6 pb-6">
+      <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 px-6 pb-6">
         {question.options.map((option) => {
           const isCurrentSelected = selectedAnswer === option;
           const isCorrectOption = option === question.correctAnswer;
@@ -66,17 +66,16 @@ export function MeaningToTextMode({
         })}
       </CardContent>
       {showFeedback && (
-        <CardFooter className="flex flex-col items-center space-y-4 pt-5">
-          <p className={cn("text-xl font-semibold", isAnswerCorrect ? "text-accent" : "text-destructive")}>
+        <CardFooter className="flex flex-col items-center space-y-3 pt-5">
+          <p className={cn("text-lg font-semibold text-center", isAnswerCorrect ? "text-green-700" : "text-destructive")}>
             {isAnswerCorrect ? "Doğru cevap!" : `Yanlış! Doğru ${modeLabel.toLowerCase()}: ${question.correctAnswer}`}
           </p>
           {question.example && (
-            <p className="text-center text-sm text-muted-foreground">Örnek: {question.example}</p>
+            <p className="text-center text-sm text-muted-foreground leading-relaxed max-w-prose">
+              Örnek: {question.example}
+            </p>
           )}
-          <Button
-            onClick={onNext}
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90 sm:w-auto"
-          >
+          <Button onClick={onNext} className="w-full sm:w-auto">
             {isGameEnding ? "Skoru Göster" : "Sonraki Soru"}
           </Button>
         </CardFooter>

@@ -6,7 +6,7 @@ import { generateQuestionBatch } from "@/dataLoader";
 import { cn } from "@/lib/utils";
 import type { GameMode, GameFormat, GameDirection, Question } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { GameHeader } from "@/components/game/shared/GameHeader";
 import { TextToMeaningMode } from "@/components/game/modes/TextToMeaningMode";
@@ -34,8 +34,8 @@ const DIRECTION_LABELS: Record<GameDirection, string> = {
 
 // Footer Component - Hidden on mobile for better UX
 const Footer = () => (
-  <footer className="hidden sm:block fixed bottom-0 left-0 right-0 py-2 text-center pointer-events-none">
-    <p className="text-xs text-gray-400/50 font-light">
+  <footer className="hidden sm:block fixed bottom-0 left-0 right-0 py-3 text-center pointer-events-none">
+    <p className="text-xs text-muted-foreground">
       Geliştirici: Müşerref Selçuk ÖZDEMİR
     </p>
   </footer>
@@ -298,40 +298,40 @@ function App(): JSX.Element {
       <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
         {/* Animated Background Elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-16 left-8 h-72 w-72 rounded-full bg-blue-200 blur-2xl opacity-50 animate-float" />
+          <div className="absolute top-40 right-8 h-72 w-72 rounded-full bg-blue-300 blur-2xl opacity-40 animate-float" style={{ animationDelay: "2s" }} />
+          <div className="absolute -bottom-10 left-1/4 h-72 w-72 rounded-full bg-blue-200 blur-2xl opacity-40 animate-float" style={{ animationDelay: "4s" }} />
         </div>
 
-        <div className="w-full max-w-xl space-y-4 z-10">
-          <Card className="glass-card relative border-white/30 shadow-lg animate-scale-in">
-          <CardHeader className="pb-4">
-            <div className="flex flex-col items-center space-y-3 pt-4">
+        <div className="w-full max-w-xl space-y-5 z-10">
+          <Card className="glass-card animate-scale-in">
+          <CardHeader className="pb-2">
+            <div className="flex flex-col items-center gap-3 pt-6">
               <img 
                 src={LOGO_URL}
                 alt="AtaDey Logo" 
-                className="h-16 w-16 animate-float sm:h-20 sm:w-20 drop-shadow-2xl object-contain"
+                className="h-16 w-16 sm:h-20 sm:w-20 object-contain animate-float"
               />
-              <h1 className="text-center">
-                <span className="block text-3xl font-extrabold tracking-tight text-blue-900 sm:text-4xl">
+              <div className="text-center">
+                <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
                   AtaDey
-                </span>
-                <span className="block mt-1 text-base font-medium text-blue-600/80">
-                  Atasözleri & Deyimler Oyunu
-                </span>
-              </h1>
+                </h1>
+                <p className="mt-2 text-base font-medium text-muted-foreground">
+                  Atasözleri &amp; Deyimler Oyunu
+                </p>
+              </div>
             </div>
           </CardHeader>
-          <CardContent className="px-6 pb-6">
-            <p className="text-center text-muted-foreground text-sm leading-relaxed mb-5">
-              Kategori, oyun tipi ve modu seçerek başlayın
+          <CardContent className="px-6 pb-6 pt-2">
+            <p className="mb-5 text-center text-sm text-muted-foreground">
+              Kategori, oyun tipi ve mod seçerek başla
             </p>
             
             {/* Kategori, Oyun Tipi ve Mod Grid Layout */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Kategori */}
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-foreground">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   Kategori
                 </p>
                 <div className="grid grid-cols-1 gap-2">
@@ -343,8 +343,8 @@ function App(): JSX.Element {
                       className={cn(
                         "w-full transition-all duration-200 ease-out font-medium h-11",
                         selectedMode === mode 
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-[1.02]" 
-                          : "border border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-800 hover:scale-[1.01]"
+                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
                       )}
                     >
                       {MODE_LABELS[mode]}
@@ -355,7 +355,7 @@ function App(): JSX.Element {
 
               {/* Oyun Tipi */}
               <div className="space-y-2">
-                <p className="text-sm font-semibold text-foreground">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   Oyun Tipi
                 </p>
                 <div className="grid grid-cols-1 gap-2">
@@ -367,8 +367,8 @@ function App(): JSX.Element {
                       className={cn(
                         "w-full transition-all duration-200 ease-out font-medium h-11",
                         selectedFormat === format 
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-[1.02]" 
-                          : "border border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-800 hover:scale-[1.01]"
+                          ? "bg-primary text-primary-foreground shadow-sm" 
+                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
                       )}
                     >
                       <span className="text-sm">{FORMAT_LABELS[format]}</span>
@@ -380,7 +380,7 @@ function App(): JSX.Element {
 
             {/* Oyun Modu - Yeni Eklendi */}
             <div className="mt-5">
-              <p className="text-sm font-semibold text-foreground mb-2">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Oyun Modu
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -392,8 +392,8 @@ function App(): JSX.Element {
                     className={cn(
                       "w-full transition-all duration-200 ease-out font-medium h-11",
                       selectedDirection === direction 
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-500/40 scale-[1.02]" 
-                        : "border border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-50/50 hover:text-blue-800 hover:scale-[1.01]"
+                        ? "bg-primary text-primary-foreground shadow-sm" 
+                        : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
                     )}
                   >
                     <span className="text-sm">
@@ -406,8 +406,8 @@ function App(): JSX.Element {
             </div>
 
             {/* Info Box */}
-            <div className="mt-4 text-xs text-center text-indigo-700 bg-indigo-50 p-2.5 rounded-lg border border-indigo-200">
-              <div className="font-semibold mb-1">
+            <div className="mt-5 rounded-xl border border-border bg-secondary/60 px-4 py-3 text-center text-xs text-muted-foreground">
+              <div className="mb-1 font-semibold text-foreground">
                 {selectedDirection === "forward" ? "📝 Normal Mod" : "🔄 Ters Mod"}
               </div>
               <div>
@@ -427,7 +427,7 @@ function App(): JSX.Element {
         <Button
           onClick={startGame}
           size="lg"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white text-base font-bold h-12 hover:scale-[1.02] transition-all duration-200 ease-out shadow-lg shadow-blue-500/40 hover:shadow-lg hover:shadow-blue-600/40"
+          className="h-12 w-full text-base font-semibold transition-transform duration-200 ease-out hover:-translate-y-0.5"
         >
           Oyuna Başla
         </Button>
@@ -439,29 +439,20 @@ function App(): JSX.Element {
 
   if (isLoading && gameState === "playing") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-blue-50">
-        <div className="glass-card p-12 rounded-3xl shadow-lg animate-scale-in">
-          <div className="relative">
-            <img 
-              src={LOGO_URL}
-              alt="Damla Logo" 
-              className="h-20 w-20 mx-auto animate-pulse object-contain"
-            />
-            <div className="absolute inset-0 animate-ping">
-              <img 
-                src={LOGO_URL}
-                alt="Damla Logo" 
-                className="h-20 w-20 mx-auto opacity-75 object-contain"
-              />
-            </div>
-          </div>
-          <p className="mt-6 text-xl font-semibold text-blue-900 animate-pulse text-center">
-            Yeni sorular yükleniyor...
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <div className="glass-card p-12 rounded-3xl animate-scale-in">
+          <img 
+            src={LOGO_URL}
+            alt="AtaDey"
+            className="mx-auto h-20 w-20 object-contain animate-pulse-soft"
+          />
+          <p className="mt-6 text-center text-lg font-semibold text-foreground">
+            Yeni sorular yükleniyor…
           </p>
-          <div className="mt-4 flex gap-2 justify-center">
-            <div className="w-3 h-3 bg-blue-600 rounded-full animate-scale-in"></div>
-            <div className="w-3 h-3 bg-blue-600 rounded-full animate-scale-in" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-3 h-3 bg-blue-600 rounded-full animate-scale-in" style={{ animationDelay: '0.4s' }}></div>
+          <div className="mt-4 flex justify-center gap-2" aria-hidden="true">
+            <div className="h-2 w-2 rounded-full bg-primary animate-pulse-soft"></div>
+            <div className="h-2 w-2 rounded-full bg-primary animate-pulse-soft" style={{ animationDelay: '0.2s' }}></div>
+            <div className="h-2 w-2 rounded-full bg-primary animate-pulse-soft" style={{ animationDelay: '0.4s' }}></div>
           </div>
         </div>
         <Footer />
@@ -471,10 +462,10 @@ function App(): JSX.Element {
 
   if (errorLoadingQuestions) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-blue-50">
-        <Card className="glass-card max-w-md p-8 text-center shadow-lg border-white/30 animate-scale-in">
-          <div className="flex justify-center mb-4">
-            <div className="bg-red-100 p-4 rounded-full">
+      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <Card className="glass-card max-w-md p-8 text-center animate-scale-in">
+          <div className="mb-4 flex justify-center">
+            <div className="rounded-full bg-destructive/10 p-4">
               <img 
                 src={LOGO_URL}
                 alt="Error" 
@@ -482,12 +473,9 @@ function App(): JSX.Element {
               />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-red-600 mb-3">Bir Hata Oluştu</h2>
-          <p className="text-muted-foreground mb-6">{errorLoadingQuestions}</p>
-          <Button 
-            onClick={restartGame} 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-12 shadow-lg"
-          >
+          <h2 className="mb-2 text-2xl font-bold text-foreground">Bir Hata Oluştu</h2>
+          <p className="mb-6 text-muted-foreground">{errorLoadingQuestions}</p>
+          <Button onClick={restartGame} className="h-11 w-full font-semibold">
             <RefreshCw className="mr-2 h-5 w-5" />
             Yeniden Dene
           </Button>
@@ -503,69 +491,66 @@ function App(): JSX.Element {
     const accuracy = totalAttempted > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-blue-50">
-        {/* Confetti Background Effect */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-10 w-3 h-3 bg-blue-400 rounded-full animate-scale-in"></div>
-          <div className="absolute top-20 right-20 w-2 h-2 bg-blue-500 rounded-full animate-scale-in" style={{ animationDelay: '0.2s' }}></div>
-          <div className="absolute top-40 left-1/4 w-4 h-4 bg-blue-600 rounded-full animate-scale-in" style={{ animationDelay: '0.4s' }}></div>
-          <div className="absolute top-60 right-1/3 w-3 h-3 bg-blue-700 rounded-full animate-scale-in" style={{ animationDelay: '0.6s' }}></div>
+      <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+        {/* Quiet celebratory field */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <div className="absolute top-12 left-10 h-2 w-2 rounded-full bg-blue-400 animate-pulse-soft"></div>
+          <div className="absolute top-24 right-20 h-2 w-2 rounded-full bg-blue-500 animate-pulse-soft" style={{ animationDelay: "0.3s" }}></div>
+          <div className="absolute top-40 left-1/4 h-3 w-3 rounded-full bg-blue-400 animate-pulse-soft" style={{ animationDelay: "0.6s" }}></div>
+          <div className="absolute top-56 right-1/3 h-2 w-2 rounded-full bg-blue-500 animate-pulse-soft" style={{ animationDelay: "0.9s" }}></div>
         </div>
 
         <div className="w-full max-w-lg space-y-4 z-10">
-          <Card ref={resultCardRef} className="glass-card text-center shadow-lg border-white/30 animate-scale-in">
+          <Card ref={resultCardRef} className="glass-card text-center animate-scale-in">
             <CardHeader className="pb-4">
-              <div className="flex items-center justify-center mb-2">
-                <Award className="h-16 w-16 text-blue-500 animate-pulse drop-shadow-lg" />
+              <div className="mb-2 flex items-center justify-center">
+                <Award className="h-14 w-14 text-primary" aria-hidden="true" />
               </div>
-              <CardTitle className="text-4xl font-extrabold tracking-tight text-blue-900">
-                Tebrikler! 🎉
-              </CardTitle>
-              <CardDescription className="text-base font-medium text-blue-600">
+              <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground">
+                Tebrikler!
+              </h2>
+              <CardDescription className="pt-1 text-base font-medium text-muted-foreground">
                 {FORMAT_LABELS[activeFormat!]}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6 px-6 pb-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
-                <div className="relative bg-blue-50 p-8 rounded-2xl">
-                  <p className="text-7xl font-extrabold tracking-tight text-blue-900 animate-pulse">
-                    {score}
-                  </p>
-                  <p className="text-sm font-semibold text-blue-600 mt-2">Doğru Cevap ✨</p>
+              <div className="rounded-2xl bg-primary/5 px-6 py-8 ring-1 ring-inset ring-primary/10">
+                <p className="text-5xl font-extrabold tracking-tight text-primary tabular-nums sm:text-6xl">
+                  {score}
+                </p>
+                <p className="mt-2 text-sm font-semibold text-muted-foreground">doğru cevap</p>
               </div>
-            </div>
             
             {activeFormat === "mistakes" && (
-              <div className="bg-blue-50 p-4 rounded-xl">
-                <p className="text-blue-800 font-medium">
-                  🎯 {score} doğru cevap verdin!
+              <div className="rounded-xl border border-border bg-secondary/60 px-4 py-3">
+                <p className="font-medium text-foreground">
+                  {score} doğru cevap verdin
                 </p>
-                <p className="text-blue-600 text-sm mt-1">
+                <p className="mt-1 text-sm text-muted-foreground">
                   5 yanlış yaparak oyunu tamamladın
                 </p>
               </div>
             )}
             
             {activeFormat === "questions" && (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between rounded-xl bg-green-50 p-4">
-                  <span className="font-semibold text-green-900 flex items-center gap-2">
-                    <span className="text-2xl">✓</span> Doğru
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+                  <span className="flex items-center gap-2 font-semibold text-green-900">
+                    <span className="text-xl" aria-hidden="true">✓</span> Doğru
                   </span>
-                  <span className="font-bold text-2xl text-green-700">{score}</span>
+                  <span className="text-2xl font-bold tabular-nums text-green-700">{score}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-xl bg-red-50 p-4">
-                  <span className="font-semibold text-red-900 flex items-center gap-2">
-                    <span className="text-2xl">✗</span> Yanlış
+                <div className="flex items-center justify-between rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+                  <span className="flex items-center gap-2 font-semibold text-red-900">
+                    <span className="text-xl" aria-hidden="true">✗</span> Yanlış
                   </span>
-                  <span className="font-bold text-2xl text-red-700">{mistakes}</span>
+                  <span className="text-2xl font-bold tabular-nums text-red-700">{mistakes}</span>
                 </div>
-                <div className="flex items-center justify-between rounded-xl bg-blue-50 p-4">
-                  <span className="font-semibold text-blue-900 flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5" /> Başarı Oranı
+                <div className="flex items-center justify-between rounded-xl border border-primary/15 bg-primary/5 px-4 py-3">
+                  <span className="flex items-center gap-2 font-semibold text-foreground">
+                    <TrendingUp className="h-5 w-5 text-primary" /> Başarı Oranı
                   </span>
-                  <span className="font-bold text-2xl text-blue-700">{accuracy}%</span>
+                  <span className="text-2xl font-bold tabular-nums text-primary">{accuracy}%</span>
                 </div>
               </div>
             )}
@@ -579,7 +564,7 @@ function App(): JSX.Element {
             size="lg"
             variant="outline"
             disabled={isSharing}
-            className="w-full border border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-800 hover:scale-105 transition-all duration-200 font-semibold h-12 disabled:opacity-50 disabled:cursor-not-allowed bg-white/80 backdrop-blur"
+            className="h-11 w-full font-semibold"
           >
             {isSharing ? (
               <>
@@ -597,7 +582,7 @@ function App(): JSX.Element {
             <Button
               onClick={restartGame}
               size="lg"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-12 hover:scale-105 transition-all duration-200 shadow-lg"
+              className="h-11 w-full font-semibold"
             >
               <RefreshCw className="mr-2 h-5 w-5" />
               Tekrar
@@ -606,7 +591,7 @@ function App(): JSX.Element {
               onClick={returnToMenu}
               size="lg"
               variant="outline"
-              className="w-full border border-blue-300 text-blue-700 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-800 font-semibold h-12 hover:scale-105 transition-all duration-200 bg-white/80 backdrop-blur"
+              className="h-11 w-full font-semibold"
             >
               <Home className="mr-2 h-5 w-5" />
               Ana Menü
@@ -622,11 +607,11 @@ function App(): JSX.Element {
   if (!currentQuestion || !activeMode || !activeDirection) {
     return (
       <>
-        <div className="flex min-h-screen flex-col items-center justify-center p-4 bg-blue-50">
+        <div className="flex min-h-screen flex-col items-center justify-center p-4">
           <img 
             src={LOGO_URL}
-            alt="Damla Logo" 
-            className="h-16 w-16 animate-pulse object-contain"
+            alt="AtaDey" 
+            className="h-16 w-16 object-contain animate-pulse-soft"
           />
         </div>
         <Footer />
@@ -639,11 +624,11 @@ function App(): JSX.Element {
 
   // PLAYING SCREEN
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-blue-50">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-float"></div>
-        <div className="absolute bottom-20 left-20 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-40 animate-float" style={{ animationDelay: '2s' }}></div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+      {/* Ambient background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div className="absolute top-20 right-16 h-64 w-64 rounded-full bg-blue-200 blur-2xl opacity-40 animate-float"></div>
+        <div className="absolute bottom-20 left-16 h-64 w-64 rounded-full bg-blue-300 blur-2xl opacity-30 animate-float" style={{ animationDelay: "2s" }}></div>
       </div>
 
       <GameHeader

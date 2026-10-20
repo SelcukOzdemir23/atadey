@@ -10,6 +10,21 @@ export default {
         body: ["Outfit", "sans-serif"],
         headline: ["Outfit", "sans-serif"]
       },
+      fontSize: {
+        xs: ["var(--text-xs)", { lineHeight: "var(--leading-tight)" }],
+        sm: ["var(--text-sm)", { lineHeight: "var(--leading-tight)" }],
+        base: ["var(--text-base)", { lineHeight: "var(--leading-normal)" }],
+        lg: ["var(--text-lg)", { lineHeight: "var(--leading-relaxed)" }],
+        xl: ["var(--text-xl)", { lineHeight: "var(--leading-relaxed)" }],
+        "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-tight)" }],
+        "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-tight)" }],
+        "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-tight)" }]
+      },
+      lineHeight: {
+        tight: "var(--leading-tight)",
+        normal: "var(--leading-normal)",
+        relaxed: "var(--leading-relaxed)"
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

@@ -4,56 +4,75 @@
 
 @layer base {
   :root {
-    /* Modern Gradient Background */
-    --background: 210 20% 98%; /* #F9FAFB */
-    --foreground: 217 33% 17%; /* #1F2937 */
+    /* ============================================================
+       AtaDey design system — blue-only palette (mavi tonlar).
+       No purple/pink/cyan decorative hues, no pure black or gray.
+       ============================================================ */
 
-    --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 217 33% 17%; /* #1F2937 */
+    --background: 210 45% 98%;
+    --foreground: 215 32% 17%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 32% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 217 33% 17%;
+    --popover-foreground: 215 32% 17%;
 
-    /* Ana Marka Rengi - Vibrant Indigo */
-    --primary: 243 75% 59%; /* #4F46E5 */
-    --primary-foreground: 0 0% 100%; /* Beyaz */
+    /* Primary blue — distinctive, not a generic indigo */
+    --primary: 212 92% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 217 33% 17%;
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 215 32% 17%;
 
-    /* Nötr Renkler */
-    --muted: 220 14% 96%; /* #F3F4F6 */
-    --muted-foreground: 220 9% 46%; /* #6B7280 */
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 18% 45%;
 
-    --accent: 243 75% 59%; /* Primary ile aynı */
+    --accent: 212 92% 45%;
     --accent-foreground: 0 0% 100%;
 
-    /* Semantik Renkler - Vibrant */
-    --destructive: 0 84% 60%; /* #EF4444 Kırmızı */
+    --destructive: 0 66% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --success: 160 84% 39%; /* #10B981 Yeşil */
+    --success: 152 62% 34%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%; /* #D1D5DB */
-    --input: 220 13% 91%;
-    --ring: 243 75% 65%; /* #6366F1 - Primary Light */
+    --border: 210 30% 88%;
+    --input: 210 30% 88%;
+    --ring: 212 92% 50%;
 
-    --chart-1: 243 75% 59%;
-    --chart-2: 160 84% 39%;
-    --chart-3: 0 84% 60%;
-    --chart-4: 198 93% 60%;
-    --chart-5: 48 96% 61%;
     --radius: 0.75rem;
 
-    --sidebar-background: 210 20% 98%;
-    --sidebar-foreground: 217 33% 17%;
-    --sidebar-primary: 243 75% 59%;
+    /* Type scale — Impeccable typeset: 1.25x steps between roles */
+    --text-xs: 0.75rem;        /* 12px */
+    --text-sm: 0.875rem;       /* 14px */
+    --text-base: 1rem;         /* 16px */
+    --text-lg: 1.25rem;        /* 20px */
+    --text-xl: 1.5625rem;      /* 25px */
+    --text-2xl: 1.953125rem;   /* 31px */
+    --text-3xl: 2.44140625rem; /* 39px */
+    --text-4xl: 3.0517578125rem; /* 49px */
+
+    --leading-tight: 1.2;
+    --leading-normal: 1.55;
+    --leading-relaxed: 1.75;
+
+    /* Chart + sidebar tokens kept in the blue family so unused
+       shadcn surfaces never reference a missing variable. */
+    --chart-1: 212 92% 45%;
+    --chart-2: 152 62% 34%;
+    --chart-3: 0 66% 50%;
+    --chart-4: 199 89% 48%;
+    --chart-5: 45 93% 47%;
+
+    --sidebar-background: 210 45% 98%;
+    --sidebar-foreground: 215 32% 17%;
+    --sidebar-primary: 212 92% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 243 75% 59%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 243 75% 65%;
+    --sidebar-accent: 210 40% 94%;
+    --sidebar-accent-foreground: 215 32% 17%;
+    --sidebar-border: 210 30% 88%;
+    --sidebar-ring: 212 92% 50%;
   }
 }
 
@@ -63,120 +82,88 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 text-foreground;
+    @apply bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200/50 text-foreground;
     min-height: 100vh;
     font-family: 'Outfit', sans-serif;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 }
 
-/* Custom Animations */
+/* ============================================================
+   Motion — purposeful only. Exponential ease-out, no bounce.
+   ============================================================ */
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 @keyframes scale-in {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% { transform: scale(0.96); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes slide-up {
-  from {
-    transform: translateY(100px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  0% { transform: translateY(16px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-.animate-float {
-  animation: float 6s ease-in-out infinite;
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-scale-in {
-  animation: scale-in 0.5s ease-out;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.5s ease-out;
-}
-
-/* Glassmorphism Card */
-.glass-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
-}
-
-/* Gradient Button */
-.gradient-button {
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  transition: all 0.3s ease;
-}
-
-.gradient-button:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
-}
-
-/* Success Animation */
-.success-pulse {
-  animation: pulse 0.5s ease-in-out;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
-/* Error Shake */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-  20%, 40%, 60%, 80% { transform: translateX(10px); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
 }
 
-.error-shake {
-  animation: shake 0.5s ease-in-out;
-}
-
-/* Heart Beat Animation */
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
-  10%, 30% { transform: scale(0.9); }
-  20%, 40% { transform: scale(1.1); }
+  30% { transform: scale(0.94); }
+  60% { transform: scale(1.06); }
 }
 
-.heart-beat {
-  animation: heartbeat 0.8s ease-in-out;
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-scale-in { animation: scale-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-slide-up { animation: slide-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+.error-shake { animation: shake 0.4s ease-out; }
+.heart-beat { animation: heartbeat 0.8s ease-in-out; }
+
+/* ============================================================
+   Surfaces — quietly elevated, hairline border, no stacked glass.
+   ============================================================ */
+.glass-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border) / 0.75);
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 10px 30px -18px rgba(15, 23, 42, 0.18);
 }
 
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-scale-in,
+  .animate-slide-up,
+  .animate-pulse-soft,
+  .error-shake,
+  .heart-beat {
+    animation: none !important;
+  }
+}
