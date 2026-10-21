@@ -295,7 +295,7 @@ function App(): JSX.Element {
   // MENU SCREEN
   if (gameState === "menu") {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+      <main className="flex min-h-[100dvh] flex-col items-center justify-center p-4 sm:p-6 md:p-8">
         {/* Animated Background Elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-16 left-8 h-72 w-72 rounded-full bg-blue-200 blur-2xl opacity-50 animate-float" />
@@ -310,10 +310,10 @@ function App(): JSX.Element {
               <img 
                 src={LOGO_URL}
                 alt="AtaDey Logo" 
-                className="h-16 w-16 sm:h-20 sm:w-20 object-contain animate-float"
+                className="h-16 w-16 sm:h-20 sm:w-20 object-contain animate-float" width={80} height={80}
               />
               <div className="text-center">
-                <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
+                <h1 className="text-4xl font-extrabold tracking-tight text-foreground text-balance">
                   AtaDey
                 </h1>
                 <p className="mt-2 text-base font-medium text-muted-foreground">
@@ -341,10 +341,10 @@ function App(): JSX.Element {
                       variant={selectedMode === mode ? "default" : "outline"}
                       onClick={() => setSelectedMode(mode)}
                       className={cn(
-                        "w-full transition-all duration-200 ease-out font-medium h-11",
+                        "w-full transition duration-200 ease-out font-medium h-11",
                         selectedMode === mode 
                           ? "bg-primary text-primary-foreground shadow-sm" 
-                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
+                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-foreground active:translate-y-px"
                       )}
                     >
                       {MODE_LABELS[mode]}
@@ -365,10 +365,10 @@ function App(): JSX.Element {
                       variant={selectedFormat === format ? "default" : "outline"}
                       onClick={() => setSelectedFormat(format)}
                       className={cn(
-                        "w-full transition-all duration-200 ease-out font-medium h-11",
+                        "w-full transition duration-200 ease-out font-medium h-11",
                         selectedFormat === format 
                           ? "bg-primary text-primary-foreground shadow-sm" 
-                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
+                          : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-foreground active:translate-y-px"
                       )}
                     >
                       <span className="text-sm">{FORMAT_LABELS[format]}</span>
@@ -390,10 +390,10 @@ function App(): JSX.Element {
                     variant={selectedDirection === direction ? "default" : "outline"}
                     onClick={() => setSelectedDirection(direction)}
                     className={cn(
-                      "w-full transition-all duration-200 ease-out font-medium h-11",
+                      "w-full transition duration-200 ease-out font-medium h-11",
                       selectedDirection === direction 
                         ? "bg-primary text-primary-foreground shadow-sm" 
-                        : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
+                        : "border border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-foreground active:translate-y-px"
                     )}
                   >
                     <span className="text-sm">
@@ -439,12 +439,12 @@ function App(): JSX.Element {
 
   if (isLoading && gameState === "playing") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center p-4">
         <div className="glass-card p-12 rounded-3xl animate-scale-in">
           <img 
             src={LOGO_URL}
             alt="AtaDey"
-            className="mx-auto h-20 w-20 object-contain animate-pulse-soft"
+            className="mx-auto h-20 w-20 object-contain animate-pulse-soft" width={80} height={80}
           />
           <p className="mt-6 text-center text-lg font-semibold text-foreground">
             Yeni sorular yükleniyor…
@@ -462,7 +462,7 @@ function App(): JSX.Element {
 
   if (errorLoadingQuestions) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4">
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center p-4">
         <Card className="glass-card max-w-md p-8 text-center animate-scale-in">
           <div className="mb-4 flex justify-center">
             <div className="rounded-full bg-destructive/10 p-4">
@@ -473,7 +473,7 @@ function App(): JSX.Element {
               />
             </div>
           </div>
-          <h2 className="mb-2 text-2xl font-bold text-foreground">Bir Hata Oluştu</h2>
+          <h2 className="mb-2 text-2xl font-bold text-foreground text-balance">Bir Hata Oluştu</h2>
           <p className="mb-6 text-muted-foreground">{errorLoadingQuestions}</p>
           <Button onClick={restartGame} className="h-11 w-full font-semibold">
             <RefreshCw className="mr-2 h-5 w-5" />
@@ -491,7 +491,7 @@ function App(): JSX.Element {
     const accuracy = totalAttempted > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+      <main className="flex min-h-[100dvh] flex-col items-center justify-center p-4 sm:p-6 md:p-8">
         {/* Quiet celebratory field */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
           <div className="absolute top-12 left-10 h-2 w-2 rounded-full bg-blue-400 animate-pulse-soft"></div>
@@ -506,7 +506,7 @@ function App(): JSX.Element {
               <div className="mb-2 flex items-center justify-center">
                 <Award className="h-14 w-14 text-primary" aria-hidden="true" />
               </div>
-              <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground">
+              <h2 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground text-balance">
                 Tebrikler!
               </h2>
               <CardDescription className="pt-1 text-base font-medium text-muted-foreground">
@@ -569,7 +569,7 @@ function App(): JSX.Element {
             {isSharing ? (
               <>
                 <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                Görsel Hazırlanıyor...
+                Görsel Hazırlanıyor…
               </>
             ) : (
               <>
@@ -607,11 +607,11 @@ function App(): JSX.Element {
   if (!currentQuestion || !activeMode || !activeDirection) {
     return (
       <>
-        <div className="flex min-h-screen flex-col items-center justify-center p-4">
+        <div className="flex min-h-[100dvh] flex-col items-center justify-center p-4">
           <img 
             src={LOGO_URL}
             alt="AtaDey" 
-            className="h-16 w-16 object-contain animate-pulse-soft"
+            className="h-16 w-16 object-contain animate-pulse-soft" width={64} height={64}
           />
         </div>
         <Footer />
@@ -624,7 +624,7 @@ function App(): JSX.Element {
 
   // PLAYING SCREEN
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+    <main className="flex min-h-[100dvh] flex-col items-center justify-center p-4 sm:p-6 md:p-8">
       {/* Ambient background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="absolute top-20 right-16 h-64 w-64 rounded-full bg-blue-200 blur-2xl opacity-40 animate-float"></div>

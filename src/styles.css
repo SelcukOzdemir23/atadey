@@ -9,6 +9,10 @@
        No purple/pink/cyan decorative hues, no pure black or gray.
        ============================================================ */
 
+    /* Light-only theme: native controls, scrollbars and form widgets
+       should not flip to dark chrome while the palette stays light. */
+    color-scheme: light;
+
     --background: 210 45% 98%;
     --foreground: 215 32% 17%;
 
@@ -99,6 +103,13 @@
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
+  }
+
+  /* Removes the 300ms double-tap zoom delay on touch devices. */
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
   }
 }
 

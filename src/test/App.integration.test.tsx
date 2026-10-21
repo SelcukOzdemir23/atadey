@@ -185,6 +185,17 @@ describe('App Integration Tests', () => {
       expect(atasozuButton.className).toContain('bg-primary');
     });
 
+    it('should keep unselected options readable on hover', () => {
+      render(<App />);
+
+      // "Deyim" is unselected by default, so it carries the resting style.
+      const deyimButton = screen.getByRole('button', { name: 'Deyim' });
+      expect(deyimButton.className).toContain('hover:bg-primary/5');
+      expect(deyimButton.className).toContain('hover:text-foreground');
+      // twMerge must have dropped the outline variant's white hover text.
+      expect(deyimButton.className).not.toContain('hover:text-accent-foreground');
+    });
+
     it('should allow selecting deyim category', () => {
       render(<App />);
       

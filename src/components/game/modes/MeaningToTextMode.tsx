@@ -40,7 +40,7 @@ export function MeaningToTextMode({
             </span>
           </div>
         </div>
-        <h2 className="px-4 text-center text-lg font-bold leading-relaxed text-foreground sm:text-xl md:text-2xl">
+        <h2 className="px-4 text-center text-lg font-bold text-balance leading-relaxed text-foreground sm:text-xl md:text-2xl">
           {question.text}
         </h2>
         <CardDescription className="pt-3 text-center text-muted-foreground font-medium text-base">

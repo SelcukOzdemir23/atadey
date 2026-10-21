@@ -18,7 +18,7 @@ export function AnswerButton({
   showFeedback,
   onAnswer
 }: AnswerButtonProps) {
-  let customClasses = "transition-all duration-200 ease-out active:translate-y-px";
+  let customClasses = "transition duration-200 ease-out active:translate-y-px";
   let buttonStyle = "";
 
   if (showFeedback) {
@@ -38,7 +38,7 @@ export function AnswerButton({
     buttonStyle = "bg-blue-600 text-white border border-blue-700/30 shadow-sm";
   } else {
     buttonStyle =
-      "bg-card border border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:-translate-y-0.5 hover:shadow-sm";
+      "bg-card border border-border text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-foreground hover:-translate-y-0.5 hover:shadow-sm";
   }
 
   return (

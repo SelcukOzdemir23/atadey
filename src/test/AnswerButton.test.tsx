@@ -70,6 +70,17 @@ describe('AnswerButton Component', () => {
     expect(button.className).toContain('bg-green-100');
   });
 
+  it('should keep label readable on hover (no white-on-white)', () => {
+    render(<AnswerButton {...defaultProps} />);
+    const button = screen.getByRole('button');
+    // The resting style lightens the background on hover, so it must also
+    // reset the text colour; otherwise the ghost variant's white wins.
+    expect(button.className).toContain('hover:bg-primary/5');
+    expect(button.className).toContain('hover:text-foreground');
+    // twMerge must have dropped the ghost variant's white hover text.
+    expect(button.className).not.toContain('hover:text-accent-foreground');
+  });
+
   it('should be disabled when showFeedback is true', () => {
     render(<AnswerButton {...defaultProps} showFeedback={true} />);
     const button = screen.getByRole('button');
