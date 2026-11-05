@@ -1,0 +1,71 @@
+# Changelog
+
+Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
+[Semantic Versioning](https://semver.org/lang/tr/) sürümlemesini izler.
+
+## [Unreleased]
+
+### Değişti
+
+- Veri artık notebook yerine tek bir Node hattıyla üretiliyor
+  (`scripts/build-data.mjs`): şema doğrulaması, kazıma artığı temizliği
+  (başlık satırları, sözlük etiketleri, sondaki ayraçlar), tekrar eden tanım
+  ayıklığı, kırpılmış sabit çıktı ve `manifest.json`.
+  `npm run data:check` CI'da üretilmiş verinin güncel olduğunu doğruluyor.
+- `deyimler.json` 3,3 MB'tan 1,7 MB'a indi; kullanılmayan `id` alanı kalktı.
+- Veri hacmi 12.695 söze / 14.872 anlama düştü (kazıma başlıkları, boş tanımlar
+  ve birebir tekrarlar çıkarıldı).
+
+### Düzeltildi
+
+- **İki doğru cevap olasılığı:** tanım havuzu rastgele örneklendiğinde çeldirici,
+  doğru cevapla birebir aynı olabiliyordu. Artık yalnızca birincil anlamı
+  veri kümesinde tek bir söze ait ve en az 12 karakter olan sözler soruluyor
+  (“çok az.” gibi tanımlar seçenek olarak da basılmıyor).
+- **Boş / anlamsız seçenekler:** `tkz.`, `argo` gibi sözlük etiketleri ve boş
+  tanımlar seçenek olarak basılıyordu.
+- **Türkçe dil bilgisi:** “hangi atasözüe ait?” → “hangi atasözüne ait?”
+- **Son soru hatası:** 9. soruda “Skoru Göster” yazıp 10. soruyu soruyordu;
+  bitiş koşulu ve buton metni aynı kurala bağlandı.
+- Örnek cümlesi olmayan sorularda boş “Örnek:” satırı basılmıyor.
+- **Geri bildirim hiyerarşisi:** yanlış seçenek artık soluklaşmıyor; doğru satır
+  sol çizgi + onay ikonu, yanlış seçim kırmızı çizgi + üstü çizili metin.
+- **Mobil menü:** “Oyuna başla” 390×844'te ilk ekranda kalıyor (önce ekran
+  dışına taşıyordu).
+- **Tekrar eden bilgi kaldırıldı:** menüdeki özet satırı, oyundaki başlık
+  tekrarı ve cevap sonrası doğru anlamın ikinci kez yazılması.
+
+### Kaldırıldı
+
+- Kullanılmayan 29 arayüz bileşeni, kullanılmayan 25 çalışma zamanı
+  bağımlılığı, `next-themes`, Radix toast ve `class-variance-authority`.
+  Çalışma zamanı bağımlılığı 34'ten 8'e indi.
+- Cam efektli kartlar, yüzen renk lekeleri, emoji ikonlar, `animate-float` /
+  `pulse` / `shake` animasyonları.
+- Repoda 23 MB yer kaplayan ajan aracı dosyaları.
+- Kodla çelişen eski planlama dokümanları (`docs/blueprint.md`,
+  `docs/teknikplan.md`, `docs/design.md`, `logs.md`, `TO-DO.md`).
+- `index.html` içine gömülü Microsoft Clarity izleme betiği (gizlilik notu ve
+  onay akışı olmadan çalışıyordu).
+- Google Fonts bağlantısı ve pembe damla logosu (yerine tipografik kelime
+  markası).
+
+### Eklendi
+
+- **“Fihrist” arayüzü**: tek kaynaklı token seti (kâğıt/mürekkep/çivit), IBM Plex
+  Serif + IBM Plex Sans (kendi barındırılan), 4px yarıçap, hairline çizgiler.
+  Menü, oyun, sonuç ve hata ekranları yeniden yazıldı; `App.tsx` 674 satırdan
+  ekran seçimine indi, oyun kuralları `useGameRun` reducer'ına taşındı.
+- Klavye kısayolları (`1–4`, `Enter`), cevap sonrası odak yönetimi ve
+  `aria-live` duyurusu.
+- Menüde gerçek `radiogroup` seçimleri, manifest'ten gelen veri sayıları ve
+  üç adımlık “nasıl oynanır” özeti.
+- Sonuç ekranı: skor + doğru/yanlış/oran dökümü, PNG paylaşımı `role="status"`
+  ile duyuruluyor.
+- `LICENSE` (MIT), `CONTRIBUTING.md`, CHANGELOG, issue/PR şablonları,
+  Dependabot, `.editorconfig`, `.nvmrc`, `docs/DATA.md`,
+  `docs/ARCHITECTURE.md`, `docs/screenshots/`.
+- CI: push ve PR'da lint, tip kontrolü, veri kontrolü, test ve derleme;
+  Pages yayını resmî `actions/deploy-pages` akışına taşındı.
+- Veri kalitesi testleri: şema, boş/tag-only tanım, tekrar, başlık artığı ve
+  gerçek veri üzerinde 80 partilik soru üretimi.

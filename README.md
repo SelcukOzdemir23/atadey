@@ -1,96 +1,114 @@
-# AtaDey — Atasözü & Deyim Oyunu
+# AtaDey — Atasözü ve Deyim Oyunu
 
 <div align="center">
-  <br />
-  <p>
-    <a href="https://selcukozdemir23.github.io/atadey/" target="_blank">
-      <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://img.shields.io/badge/canl%C4%B1%20site-atadey-blue?style=for-the-badge&logo=github&label=Canl%C4%B1%20Site">
-        <img alt="Canlı Site" src="https://img.shields.io/badge/canl%C4%B1%20site-atadey-blue?style=for-the-badge&logo=github">
-      </picture>
-    </a>
-  </p>
 
-  <p>
-    <img src="https://img.shields.io/badge/React-18.x-61DAFB?style=flat-square&logo=react" alt="React 18" />
-    <img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript" alt="TypeScript" />
-    <img src="https://img.shields.io/badge/Vite-5.x-646CFF?style=flat-square&logo=vite" alt="Vite" />
-    <img src="https://img.shields.io/badge/Tailwind-3.x-06B6D4?style=flat-square&logo=tailwindcss" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/Test-Vitest-6E9F18?style=flat-square&logo=vitest" alt="Vitest" />
-  </p>
+[![CI](https://github.com/SelcukOzdemir23/atadey/actions/workflows/ci.yml/badge.svg)](https://github.com/SelcukOzdemir23/atadey/actions/workflows/ci.yml)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+[![Canlı site](https://img.shields.io/badge/canl%C4%B1%20site-atadey-1f6feb)](https://selcukozdemir23.github.io/atadey/)
+
 </div>
 
-Atasözleri ve deyimlerle Türkçe bilgini test et. İki farklı oyun moduyla hem eğlen hem öğren.
+Türkçe atasözü ve deyimleri anlamlarıyla eşleştiren, tarayıcıda çalışan bir bilgi
+oyunu. Kurulum yok, sunucu yok, hesap yok: sayfa açılır, oyun başlar.
 
----
+| Menü | Oyun |
+| --- | --- |
+| ![Menü ekranı](docs/screenshots/menu.png) | ![Oyun ekranı](docs/screenshots/game.png) |
 
-## Oyun Modları
+| Sonuç | Menü (mobil) |
+| --- | --- |
+| ![Sonuç ekranı](docs/screenshots/result.png) | ![Mobil menü](docs/screenshots/menu-mobile.png) |
 
-- **Anlamdan Söze** — Verilen anlama uygun atasözünü/deyimi bul
-- **Sözden Anlama** — Verilen atasözü/deyimin anlamını bul
+## Nasıl oynanır
+
+Üç seçim yapılır ve oyun başlar:
+
+| Seçim | Seçenekler |
+| --- | --- |
+| **Kategori** | Atasözü · Deyim |
+| **Oyun tipi** | 5 can (5 yanlışta biter) · 10 soru |
+| **Yön** | Sözden anlama · Anlamdan söze |
+
+Her soruda dört seçenekten biri doğrudur. Cevaptan sonra doğru anlam, varsa
+kullanım örneğiyle birlikte gösterilir; örnek yoksa satır hiç basılmaz. Oyun
+sonunda skorun görseli indirilebilir veya panoya kopyalanabilir.
+
+## Veri
+
+- **2.255 atasözü** ve **10.440 deyim**: toplam 14.872 anlam.
+- Kaynak: `data/raw/*.csv` içindeki kazınmış sözlük dökümü. Kökeni ve lisans
+  notu için [data/raw/SOURCE.md](data/raw/SOURCE.md).
+- `public/data/*.json` **elle düzenlenmez**. Hepsi `npm run data:build` ile
+  üretilen, sıralaması ve baytları sabit çıktılardır; CI `npm run data:check`
+  ile doğrular. Kurallar: [docs/DATA.md](docs/DATA.md).
+
+Soru üretimi tek bir kurala dayanır: bir sözün yalnızca birincil anlamı
+veri kümesinde tek bir söze aitse o söz sorulabilir. Böylece hiçbir soruda iki
+seçenek doğru olamaz.
 
 ## Özellikler
 
-- 1000+ atasözü ve deyim — statik JSON'dan lazy-load, API gerekmez
-- Tailwind CSS + shadcn/ui ile karanlık/aydınlık tema
-- Tamamen istemci tarafı — Firebase yok, hızlı çalışır
-- localStorage ile yerel skor kaydı
-- Mobil ve masaüstünde duyarlı tasarım
+- İki kategori × iki oyun tipi × iki yön.
+- Her soru dört farklı seçenek ve tek doğru cevap; anlamsız/kısaltma seçenek yok.
+- Cevaptan sonra yalnızca **yeni** bilgi: varsa kullanım örneği ve diğer anlamlar.
+- Klavye: `1–4` ile cevapla, `Enter` ile ilerle; cevap sonrası odak “Sonraki”de.
+- Ekran okuyucu için `aria-live` duyurusu (ör. “Yanlış. Doğru cevap: …”).
+- Tamamen istemci tarafı; sunucu, hesap, çerez ve izleme betiği yok.
+- Yazı tipleri kendi barındırılıyor; sayfa açılırken üçüncü tarafa istek gitmiyor.
+- Sonucu PNG olarak paylaşma (pano veya indirme).
 
-## Başlangıç
+## Kurulum
+
+Node 20+ gerekir (`.nvmrc` → 22).
 
 ```bash
-# Bağımlılıkları yükle
-npm install
-
-# Geliştirme sunucusu
+npm ci
 npm run dev
-
-# Prodüksiyon build'i
-npm run build
-
-# Build önizleme
-npm run preview
 ```
 
-## Proje Yapısı
+Uygulama GitHub Pages alt yolunda yayınlandığı için geliştirme sunucusu da
+kök dizinden değil alt yoldan açılır: **http://localhost:5173/atadey/**
+
+## Komutlar
+
+| Komut | Ne yapar |
+| --- | --- |
+| `npm run dev` | Geliştirme sunucusu (`/atadey/`) |
+| `npm run build` | Tip kontrolü + üretim derlemesi |
+| `npm run preview` | Derlemeyi yerel olarak sunar |
+| `npm test` | Testler (veri kalite testleri dahil) |
+| `npm run test:coverage` | Kapsam raporu |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run data:build` | Ham CSV'lerden `public/data` üretir |
+| `npm run data:check` | Üretilmiş veri güncel mi, doğrular |
+
+## Proje yapısı
 
 ```
-src/
-├── components/     # UI ve oyun bileşenleri
-├── hooks/          # React hooks
-├── lib/            # Yardımcı fonksiyonlar
-├── test/           # Test dosyaları
-├── types.ts        # TypeScript tipleri
-├── utils.ts        # Oyun mantığı
-└── App.tsx         # Ana uygulama bileşeni
-
-public/data/
-├── atasozleri.json # Atasözü verileri
-└── deyimler.json   # Deyim verileri
+data/raw/        Ham CSV'ler + kaynak notu (elle düzenlenir)
+public/data/     Üretilen JSON + manifest (elle düzenlenmez)
+scripts/         Veri hattı
+src/components/  Arayüz bileşenleri
+src/dataLoader.ts  Veri yükleme ve soru üretimi
+src/test/        Davranış ve veri kalitesi testleri
+docs/            Tasarım, veri ve mimari notları
 ```
 
-## Script'ler
+- Mimari: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Tasarım sistemi: [docs/DESIGN.md](docs/DESIGN.md) — “Fihrist”: IBM Plex
+  Serif/Sans, tek vurgu rengi, 4px yarıçap, hairline çizgiler.
+- Veri hattı: [docs/DATA.md](docs/DATA.md)
 
-| Komut | Açıklama |
-|-------|----------|
-| `npm run dev` | Geliştirme sunucusu |
-| `npm run build` | TypeScript kontrolü + Vite build |
-| `npm run preview` | Build önizleme |
-| `npm test` | Testleri çalıştır |
-| `npm run lint` | ESLint kod kalite kontrolü |
-| `npm run test:coverage` | Test kapsama raporu |
+## Katkı
 
-## Test
+Hata bildirimi ve öneriler için issue açabilirsin; kod katkısı için
+[CONTRIBUTING.md](CONTRIBUTING.md) içindeki kısa listeye bak.
 
-```bash
-# Tüm testleri çalıştır
-npm test
+## Lisans
 
-# Testleri izleme modunda çalıştır
-npm run test:watch
-```
+Kod MIT lisanslıdır ([LICENSE](LICENSE)). Oyun verisi kazınmış bir sözlük
+dökümünden gelir ve kendi kaynak notuna tabidir: bu veriyi proje dışında
+kullanmadan önce [data/raw/SOURCE.md](data/raw/SOURCE.md) dosyasını oku.
 
----
-
-Geliştirici: [Selçuk Özdemir](https://github.com/selcukozdemir23)
+Geliştirici: [Müşerref Selçuk Özdemir](https://github.com/SelcukOzdemir23)
