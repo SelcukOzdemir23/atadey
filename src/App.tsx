@@ -9,7 +9,7 @@ import { useGameRun } from "@/hooks/useGameRun";
  * The whole app: pick a screen from the run state. All game rules live in
  * `useGameRun`; screens only render what they are handed.
  */
-function App(): JSX.Element {
+function App() {
   const game = useGameRun();
 
   switch (game.screen) {
