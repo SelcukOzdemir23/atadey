@@ -62,8 +62,10 @@ export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }
           {CATEGORY_LABEL[run.mode]} · {DIRECTION_LABEL[run.direction]} · {FORMAT_LABEL[run.format]}
         </p>
 
-        <p className="tabular mt-2 font-serif text-hero text-ink">{score}</p>
-        <p className="text-sm text-ink-soft">doğru cevap</p>
+        <div className="mt-3 flex items-baseline gap-3">
+          <p className="tabular font-serif text-hero text-ink">{score}</p>
+          <p className="text-sm text-ink-soft">doğru cevap</p>
+        </div>
 
         <dl className="mt-7 grid grid-cols-3 gap-4 border-t border-rule pt-4">
           <div>

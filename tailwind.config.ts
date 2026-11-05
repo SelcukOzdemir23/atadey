@@ -16,11 +16,12 @@ export default {
         base: ["1rem", { lineHeight: "1.55" }],
         lead: ["1.125rem", { lineHeight: "1.5" }],
         quote: ["1.25rem", { lineHeight: "1.7" }],
-        entry: ["1.625rem", { lineHeight: "1.3" }],
-        "entry-lg": ["2.125rem", { lineHeight: "1.25" }],
+        // Fluid display sizes: one rule instead of breakpoint jumps.
+        entry: ["clamp(1.5rem, 1.2rem + 1.1vw, 1.75rem)", { lineHeight: "1.3" }],
+        "entry-lg": ["clamp(1.75rem, 1.3rem + 1.8vw, 2.375rem)", { lineHeight: "1.22" }],
         score: ["2.75rem", { lineHeight: "1.05" }],
-        hero: ["4rem", { lineHeight: "1" }],
-        display: ["3.25rem", { lineHeight: "1.05" }]
+        hero: ["clamp(3.5rem, 2.2rem + 5vw, 5.5rem)", { lineHeight: "0.95" }],
+        display: ["clamp(2.5rem, 1.6rem + 3.6vw, 4rem)", { lineHeight: "1.02" }]
       },
       colors: {
         paper: "hsl(var(--paper) / <alpha-value>)",

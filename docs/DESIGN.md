@@ -22,15 +22,23 @@ barındırılır (`@fontsource`); Google Fonts'a çalışma anında istek atılm
 
 | Rol | Aile | Boyut / satır | Kullanım |
 | --- | --- | --- | --- |
-| `display` | Plex Serif 600 | 52 / 1.05 | Kelime markası |
-| `hero` | Plex Serif 600 | 64 / 1 | Sonuç skoru |
-| `entry-lg` | Plex Serif 600 | 34 / 1.25 | Soru metni (masaüstü) |
-| `entry` | Plex Serif 600 | 26 / 1.3 | Soru metni (mobil) |
-| `quote` | Plex Serif 400 italic | 20 / 1.7 | Örnek cümle, ters mod istemi |
+| `display` | Plex Serif 600 | `clamp(40→64)` / 1.02 | Kelime markası |
+| `hero` | Plex Serif 600 | `clamp(56→88)` / 0.95 | Sonuç skoru |
+| `entry-lg` | Plex Serif 600 | `clamp(28→38)` / 1.22 | Soru metni (söz) |
+| `entry` | Plex Serif 600 | `clamp(24→28)` / 1.3 | Soru metni (anlam) |
+| `quote` | Plex Serif 400 italic | 20 / 1.7 | Örnek cümle |
 | `lead` | Plex Sans 400 | 18 / 1.5 | Giriş satırı, seçenek |
 | `body` | Plex Sans 400 | 16 / 1.55 | Gövde |
 | `label` | Plex Sans 500 | 12 / 1.2 | Bölüm etiketi (0.08em aralık, BÜYÜK HARF) |
-| `score` | Plex Serif 600 tabular | 44 | Skor |
+
+Boyutlar **`clamp()` ile akışkan**: tek bir kural, kırılma noktası sıçraması
+yok. Skor, madde numarası ve sayaçlar `font-variant-numeric: tabular-nums`
+taşır; sayfa kayarken genişlik oynamaz.
+
+Kullanılan modern teknikler, hepsi geri düşüşlü: `:has()` (odak halkası
+grubun tamamında), `text-wrap: balance` (başlıklar), `clamp()` (tipografi),
+`tabular-nums` (sayılar), `prefers-reduced-motion` (hareket), semantik
+`fieldset/legend` + `radiogroup` (seçimler). Süs için değil, davranış için.
 
 Not: `cn()` (tailwind-merge) bu özel `text-*` boyutlarını tanımak için
 `src/lib/utils.ts` içinde yapılandırıldı; yeni bir boyut eklenirse oraya da
@@ -101,17 +109,18 @@ Mobilde tek sütun; üç adımlık liste gizlenir, düğme **kaydırmadan görü
 
 ### Oyun — “madde”
 
-- Üst şerit: solda kategori ve yön, sağda skor; altında ilerleme. Can
-  modunda ilerleme çizgisi yerine **5 küçük kare** ve “Can 3/5” metni var —
-  yürek ikonu yok, renk tek başına anlam taşımıyor. Soru modunda 2px ilerleme
-  çizgisi ve “Soru 04 / 10”.
-- Kart: söz (serif, büyük), tek satır istem (“Bu söz ne anlama gelir?”),
-  ardından dört seçenek **A·B·C·D** harfli satırlar olarak hairline çizgiyle
-  ayrılır. Seçenek kutusu yığını değil, liste — uzun tanımlar okunabilir kalır.
+- Üst şerit: solda **büyük madde numarası** (serif, 36–44px) — fihristin
+  çıpası; yanında kategori · yön ve skor; altında ilerleme. Can modunda
+  ilerleme çizgisi yerine “5 can” metni + beş küçük kare var. Soru modunda
+  2px ilerleme çizgisi ve “4/10”.
+- Kart: söz (serif, akışkan 24–38px), tek satır istem (“Bu söz ne anlama
+  gelir?”), ardından dört seçenek **A·B·C·D** rozetli satırlar olarak hairline
+  çizgiyle ayrılır. Harf rozetleri `--accent-wash` zeminlidir: satırlar gözle
+  hızla taranır, seçenek kutusu yığını oluşmaz.
 - Cevap sonrası: satırlar yerinde kalır; doğru satır `--correct` sol çizgi +
   onay ikonu, yanlış seçim `--wrong` sol çizgi + üstü çizili metin. Altında
-  sadece **sorunun göstermediği** bilgi: varsa kullanım örneği, varsa diğer
-  anlamlar. Doğru anlam zaten işaretli satırdır (ters modda istemdir);
+  **iki sütunlu** geri bildirim (≥640px): solda karar (DOĞRU/YANLIŞ), sağda
+  varsa örnek cümle ve diğer anlamlar. Doğru anlam zaten işaretli satırdır;
   tekrar basılmaz.
 
 ### Sonuç — “fiş”

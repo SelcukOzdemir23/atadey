@@ -22,13 +22,16 @@ export function AnswerOption({ index, text, state, onSelect }: AnswerOptionProps
       type="button"
       onClick={onSelect}
       className={cn(
-        "grid w-full grid-cols-[1.25rem_minmax(0,1fr)_1rem] items-start gap-3 border-l-2 border-t border-t-rule border-l-transparent px-2 py-4 text-left transition-colors duration-150",
+        "grid w-full grid-cols-[1.5rem_minmax(0,1fr)_1rem] items-start gap-3 border-l-2 border-t border-t-rule border-l-transparent px-2 py-4 text-left transition-colors duration-150",
         state === "idle" && "hover:bg-ink/[0.03]",
         state === "correct" && "border-l-correct bg-correct/[0.06]",
         state === "wrong" && "border-l-wrong bg-wrong/[0.05]"
       )}
     >
-      <span aria-hidden="true" className="pt-0.5 text-label font-medium text-ink-soft">
+      <span
+        aria-hidden="true"
+        className="flex h-6 w-6 items-center justify-center rounded-sm bg-accent-wash text-label font-semibold text-accent"
+      >
         {LETTERS[index]}
       </span>
       <span

@@ -57,7 +57,7 @@ export function MenuScreen({ onStart }: MenuScreenProps) {
 
   return (
     <main className="mx-auto flex min-h-[100dvh] w-full max-w-[1040px] flex-col px-5 py-10 sm:px-8 sm:py-14 lg:py-20">
-      <div className="grid flex-1 gap-10 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-stretch lg:gap-20">
+      <div className="grid flex-1 gap-10 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start lg:gap-12">
         <section className="flex animate-enter flex-col">
           <h1>
             <Wordmark />
@@ -80,7 +80,7 @@ export function MenuScreen({ onStart }: MenuScreenProps) {
           </ol>
 
           {counts && (
-            <p className="tabular mt-10 border-t border-rule pt-4 text-sm text-ink-soft lg:mt-auto">
+            <p className="tabular mt-10 border-t border-rule pt-4 text-sm text-ink-soft">
               {`${formatCount(counts.phrases)} söz · ${formatCount(counts.definitions)} anlam`}
             </p>
           )}
