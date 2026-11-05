@@ -1,17 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+// Self-hosted type: IBM Plex (OFL). Latin + Latin Extended carry Turkish.
+import "@fontsource/ibm-plex-sans/latin-400.css";
+import "@fontsource/ibm-plex-sans/latin-ext-400.css";
+import "@fontsource/ibm-plex-sans/latin-500.css";
+import "@fontsource/ibm-plex-sans/latin-ext-500.css";
+import "@fontsource/ibm-plex-sans/latin-600.css";
+import "@fontsource/ibm-plex-sans/latin-ext-600.css";
+import "@fontsource/ibm-plex-serif/latin-600.css";
+import "@fontsource/ibm-plex-serif/latin-ext-600.css";
+import "@fontsource/ibm-plex-serif/latin-400-italic.css";
+import "@fontsource/ibm-plex-serif/latin-ext-400-italic.css";
+
 import App from "./App";
 import "./styles.css";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
-
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-      <App />
-      <Toaster />
-    </ThemeProvider>
+    <App />
   </React.StrictMode>
 );

@@ -1,108 +1,70 @@
 import type { Config } from "tailwindcss";
-import animate from "tailwindcss-animate";
 
 export default {
-  darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        body: ["Outfit", "sans-serif"],
-        headline: ["Outfit", "sans-serif"]
+        // Self-hosted via @fontsource (see src/main.tsx).
+        serif: ["IBM Plex Serif", "Georgia", "serif"],
+        sans: ["IBM Plex Sans", "system-ui", "-apple-system", "sans-serif"]
       },
       fontSize: {
-        xs: ["var(--text-xs)", { lineHeight: "var(--leading-tight)" }],
-        sm: ["var(--text-sm)", { lineHeight: "var(--leading-tight)" }],
-        base: ["var(--text-base)", { lineHeight: "var(--leading-normal)" }],
-        lg: ["var(--text-lg)", { lineHeight: "var(--leading-relaxed)" }],
-        xl: ["var(--text-xl)", { lineHeight: "var(--leading-relaxed)" }],
-        "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-tight)" }],
-        "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-tight)" }],
-        "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-tight)" }]
-      },
-      lineHeight: {
-        tight: "var(--leading-tight)",
-        normal: "var(--leading-normal)",
-        relaxed: "var(--leading-relaxed)"
+        label: ["0.75rem", { lineHeight: "1.2", letterSpacing: "0.08em" }],
+        xs: ["0.75rem", { lineHeight: "1.35" }],
+        sm: ["0.875rem", { lineHeight: "1.45" }],
+        base: ["1rem", { lineHeight: "1.55" }],
+        lead: ["1.125rem", { lineHeight: "1.5" }],
+        quote: ["1.25rem", { lineHeight: "1.7" }],
+        entry: ["1.625rem", { lineHeight: "1.3" }],
+        "entry-lg": ["2.125rem", { lineHeight: "1.25" }],
+        score: ["2.75rem", { lineHeight: "1.05" }],
+        hero: ["4rem", { lineHeight: "1" }],
+        display: ["3.25rem", { lineHeight: "1.05" }]
       },
       colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))"
+        paper: "hsl(var(--paper) / <alpha-value>)",
+        surface: "hsl(var(--surface) / <alpha-value>)",
+        ink: {
+          DEFAULT: "hsl(var(--ink) / <alpha-value>)",
+          soft: "hsl(var(--ink-soft) / <alpha-value>)"
         },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))"
-        },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))"
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))"
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))"
-        },
+        rule: "hsl(var(--rule) / <alpha-value>)",
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))"
+          DEFAULT: "hsl(var(--accent) / <alpha-value>)",
+          foreground: "hsl(var(--accent-foreground) / <alpha-value>)",
+          wash: "hsl(var(--accent-wash) / <alpha-value>)"
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))"
+        correct: {
+          DEFAULT: "hsl(var(--correct) / <alpha-value>)",
+          foreground: "hsl(var(--correct-foreground) / <alpha-value>)"
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          1: "hsl(var(--chart-1))",
-          2: "hsl(var(--chart-2))",
-          3: "hsl(var(--chart-3))",
-          4: "hsl(var(--chart-4))",
-          5: "hsl(var(--chart-5))"
-        },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))"
+        wrong: {
+          DEFAULT: "hsl(var(--wrong) / <alpha-value>)",
+          foreground: "hsl(var(--wrong-foreground) / <alpha-value>)"
         }
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)"
+        DEFAULT: "4px",
+        sm: "2px",
+        md: "4px",
+        lg: "4px",
+        xl: "4px"
+      },
+      maxWidth: {
+        measure: "60ch",
+        "measure-wide": "65ch"
       },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" }
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" }
-        },
-        shake: {
-          "0%, 100%": { transform: "translateX(0)" },
-          "10%, 30%, 50%, 70%, 90%": { transform: "translateX(-5px)" },
-          "20%, 40%, 60%, 80%": { transform: "translateX(5px)" }
+        enter: {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" }
         }
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        shake: "shake 0.5s ease-in-out"
+        enter: "enter 180ms cubic-bezier(0.22, 1, 0.36, 1) both"
       }
     }
   },
-  plugins: [animate]
+  plugins: []
 } satisfies Config;

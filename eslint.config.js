@@ -7,7 +7,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
   {
-    ignores: ["dist", "node_modules"]
+    ignores: ["dist", "node_modules", "coverage", "public/data"]
   },
   {
     files: ["**/*.{ts,tsx}"],
@@ -37,6 +37,17 @@ export default [
       ],
       "@typescript-eslint/no-explicit-any": "warn",
       "no-undef": "off" // TypeScript handles this
+    }
+  },
+  {
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      globals: globals.node
+    },
+    rules: {
+      ...js.configs.recommended.rules
     }
   }
 ];

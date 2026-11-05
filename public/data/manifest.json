@@ -1,0 +1,28 @@
+{
+  "datasetVersion": 1,
+  "generator": "scripts/build-data.mjs",
+  "source": "data/raw/*.csv (see data/raw/SOURCE.md)",
+  "categories": {
+    "atasozleri": {
+      "file": "data/atasozleri.json",
+      "phrases": 2255,
+      "definitions": 2300,
+      "definitionsWithExample": 0,
+      "bytes": 387310,
+      "sha256": "db63606f6a1af0b70cd89ffdbbafcbb281c10e36cacec789bb02d18dde4c0dd6"
+    },
+    "deyimler": {
+      "file": "data/deyimler.json",
+      "phrases": 10440,
+      "definitions": 12572,
+      "definitionsWithExample": 4349,
+      "bytes": 1776945,
+      "sha256": "6cccc04fc605684a725aa8df9524e2e858d3999bbbb109cb39fdf69d3ab245ea"
+    }
+  },
+  "totals": {
+    "phrases": 12695,
+    "definitions": 14872,
+    "definitionsWithExample": 4349
+  }
+}

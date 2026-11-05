@@ -1,5 +1,26 @@
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+/**
+ * tailwind-merge has to be told about our custom `text-*` sizes, otherwise it
+ * treats "text-entry" as a text colour and drops it next to "text-ink".
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [
+        "text-label",
+        "text-lead",
+        "text-quote",
+        "text-entry",
+        "text-entry-lg",
+        "text-score",
+        "text-hero",
+        "text-display"
+      ]
+    }
+  }
+});
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
