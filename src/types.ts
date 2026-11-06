@@ -45,4 +45,6 @@ export interface DatasetManifest {
   datasetVersion: number;
   categories: Record<GameMode, { file: string; phrases: number; definitions: number; definitionsWithExample: number }>;
   totals: { phrases: number; definitions: number; definitionsWithExample: number };
+  /** Fixed sample of single-meaning proverbs used for “günün sözü”. */
+  highlights?: { text: string; definition: string }[];
 }

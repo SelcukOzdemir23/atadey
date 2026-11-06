@@ -31,6 +31,8 @@ const DATASETS = [
 
 const DATASET_VERSION = 1;
 const MIN_DEFINITION_LENGTH = 3;
+const HIGHLIGHT_COUNT = 24;
+const HIGHLIGHT_MIN_LENGTH = 20;
 
 /** Lexicon labels that describe register, not meaning. */
 const LEXICON_TAGS = ["tkz", "ktz", "argo", "mecaz", "esk", "halk ağzı", "teklifsiz konuşmada"];
@@ -198,6 +200,26 @@ function summarize(entries) {
   return { phrases: entries.length, definitions, definitionsWithExample: withExample };
 }
 
+/**
+ * “Günün sözü” için küçük, sabit bir seçki: tek anlamlı ve kendi başına
+ * anlaşılır sözler, alfabe boyunca eşit aralıklarla. Tarih seçimi uygulama
+ * tarafında yapılır; manifest her gün aynı kalır (bayt-sabit çıktı).
+ */
+function pickHighlights(entries) {
+  const candidates = entries.filter(
+    (entry) => entry.definitions.length === 1 && entry.definitions[0].definition.length >= HIGHLIGHT_MIN_LENGTH
+  );
+
+  if (candidates.length === 0) return [];
+
+  const step = candidates.length / HIGHLIGHT_COUNT;
+
+  return Array.from({ length: HIGHLIGHT_COUNT }, (_, index) => {
+    const entry = candidates[Math.floor(index * step)] ?? candidates[candidates.length - 1];
+    return { text: entry.text, definition: entry.definitions[0].definition };
+  });
+}
+
 function serialize(dataset) {
   return `${JSON.stringify({ version: DATASET_VERSION, entries: dataset.entries })}\n`;
 }
@@ -211,11 +233,16 @@ async function main() {
   const outputs = new Map();
   const manifestCategories = {};
   const report = [];
+  let highlights = [];
 
   for (const dataset of DATASETS) {
     const csvText = await readFile(path.join(ROOT, dataset.source), "utf8");
     const built = buildDataset(csvText);
     const json = serialize(built);
+
+    if (dataset.key === "atasozleri") {
+      highlights = pickHighlights(built.entries);
+    }
 
     outputs.set(dataset.file, json);
     manifestCategories[dataset.key] = {
@@ -241,7 +268,8 @@ async function main() {
     generator: "scripts/build-data.mjs",
     source: "data/raw/*.csv (see data/raw/SOURCE.md)",
     categories: manifestCategories,
-    totals
+    totals,
+    highlights
   };
   const manifestJson = `${JSON.stringify(manifest, null, 2)}\n`;
 

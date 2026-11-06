@@ -24,5 +24,103 @@
     "phrases": 12695,
     "definitions": 14872,
     "definitionsWithExample": 4349
-  }
+  },
+  "highlights": [
+    {
+      "text": "Allah bal mumu yakana bal mumu, yağ mumu yakana yağ mumu verir",
+      "definition": "Tanrı bol harcayana bol, az harcayana az verir."
+    },
+    {
+      "text": "aklına geleni işleme, her ağacı taşlama",
+      "definition": "sonunu düşünmeksizin aklına eseni yapan, herkese sataşan kimse bu davranışının büyük zararlarını görür."
+    },
+    {
+      "text": "araba devrilince (kırıldıktan sonra, kırılınca) yol gösteren çok olur",
+      "definition": "iş işten geçtikten sonra verilen öğüdün değeri yoktur."
+    },
+    {
+      "text": "av köpeği avdan kalmaz",
+      "definition": "hazıra konmayı alışkanlık yapmış kimse her zaman bu yolu izler."
+    },
+    {
+      "text": "ağacın kurdu içinde olur",
+      "definition": "bir topluluğu çökertecek olan şey yine kendi içinden çıkar."
+    },
+    {
+      "text": "balı olan bal yemez mi?",
+      "definition": "bir kimsenin elinde başkasına verilecek veya satılacak bir şey bulunması, ondan kendisinin de yararlanmasına engel değildir."
+    },
+    {
+      "text": "bir el bir eli yıkar, iki el bir yüzü yıkar",
+      "definition": "bazı durumlarda yardımcısız iş yapılamayacağını anlatan bir söz."
+    },
+    {
+      "text": "büyük lokma ye büyük söz söyleme",
+      "definition": "başaramayacağın, sonuçlandıramayacağın bir konuda kesin sözler söyleme."
+    },
+    {
+      "text": "denizdeki balığın pazarı (pazarlığı) olmaz",
+      "definition": "henüz elde olmayan bir nesnenin alımı, satımı üzerinde konuşulmaz."
+    },
+    {
+      "text": "doğru söz yemin istemez",
+      "definition": "sözün doğruluğunda kuşku yoksa yemine gerek yoktur."
+    },
+    {
+      "text": "elinle ver, ayağınla ara",
+      "definition": "ödünç aldığı şeyi geri vermeyi geciktiren veya vermeyenler için söylenen bir söz."
+    },
+    {
+      "text": "eşeği düğüne çağırmışlar, ‘ya su lazımdır ya odun’ demiş",
+      "definition": "bir işi yapmamak için bahane bulmayı anlatan bir söz."
+    },
+    {
+      "text": "gülme komşuna, gelir başına",
+      "definition": "birinin başına gelen kötü bir durum senin de başına gelebilir."
+    },
+    {
+      "text": "her taş baş yarmaz",
+      "definition": "korkulan her şey tehlikeli değildir."
+    },
+    {
+      "text": "insan sözünden (ikrarından), hayvan yularından tutulur",
+      "definition": "yularından tutulan hayvan başka yöne sapamadığı gibi insan da söylediği sözün dışına çıkamaz."
+    },
+    {
+      "text": "kar ne kadar çok yağsa yaza kalmaz",
+      "definition": "elverişli bir ortamda çoğalan şeyler, ortam elverişliliğini yitirince yok olur."
+    },
+    {
+      "text": "keyif benim, köy Mehmet Ağa’nın",
+      "definition": "hiçbir şeyi tasa etmiyorum, işlerim yolunda."
+    },
+    {
+      "text": "köpek bile yal yediği kaba pislemez",
+      "definition": "köpek bile yem yediği kaba saygılı davranırken insanın geçimini sağlayan yere, kendisine bu geçimi hazırlayan kimseye kötülük etmesi düşünülemez."
+    },
+    {
+      "text": "malın iyisi suya yakın, daha iyisi eve yakın",
+      "definition": "çiftçinin toprağı suya ne kadar yakınsa değeri o kadar çok olur; bakımı, ürünün güvenliği ve eve kolay taşınabilmesi bakımından toprağın eve yakın olması daha da önemlidir."
+    },
+    {
+      "text": "oğlan anası kapı arkası, kız anası minder kabası",
+      "definition": "eve gelin geldikten sonra oğlanın anası kapı dışarı edilecek kadar fazla görülür ama kızın anası başköşeye oturtulur."
+    },
+    {
+      "text": "sağlık varlıktan yeğdir",
+      "definition": "sağlıktan büyük zenginlik olmaz."
+    },
+    {
+      "text": "talihsiz hacıyı deve üstünde yılan sokar",
+      "definition": "amacını gerçekleştirmesi mümkün olmayan kişinin karşısına, hatır ve hayale gelmeyen ve yenilemeyen engeller çıkar."
+    },
+    {
+      "text": "uçan kuş aç kalmaz",
+      "definition": "yaşam kavgası vermeyi bilen ne yapar yapar rızkını çıkarır."
+    },
+    {
+      "text": "yerini bilmeyen, yılda bir kat urba eskitir",
+      "definition": "hangi alanda çalışabileceğini önceden iyi kestirememiş olan kişi sık sık yer ve iş değiştirme yüzünden hayli zarar görür."
+    }
+  ]
 }

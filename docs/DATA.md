@@ -76,9 +76,17 @@ anlamlar ve çok kısa tanımlar yüzünden elendi. Veri büyüdükçe bu oran a
     "atasozleri": { "file": "data/atasozleri.json", "phrases": 2255, "definitions": 2300, "definitionsWithExample": 0, "bytes": 387355, "sha256": "…" },
     "deyimler": { "file": "data/deyimler.json", "phrases": 10440, "definitions": 12572, "definitionsWithExample": 4349, "bytes": 1778306, "sha256": "…" }
   },
-  "totals": { "phrases": 12695, "definitions": 14872, "definitionsWithExample": 4349 }
+  "totals": { "phrases": 12695, "definitions": 14872, "definitionsWithExample": 4349 },
+  "highlights": [{ "text": "…", "definition": "…" }]
 }
 ```
+
+`highlights`: “günün sözü” için **24 sözlük seçkisi**. Seçki her build'de aynı
+dır (alfabe boyunca eşit aralıklarla, tek anlamlı ve en az 20 karakterlik
+anlamı olan atasözleri). Hangi sözün gösterileceğine uygulama karar verir:
+`günSayısı % highlights.length`. Böylece manifest bayt-sabit kalır, “günün
+sözü” yine her gün değişir. Alan isteğe bağlıdır; eski bir manifest gelirse
+menü sessizce bu blok olmadan çalışır.
 
 Kategori dosyası: `{ "version": 1, "entries": [{ "text": "…", "definitions": [{"definition": "…", "example"?: "…"}] }] }`
 
