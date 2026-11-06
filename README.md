@@ -19,6 +19,10 @@ oyunu. Kurulum yok, sunucu yok, hesap yok: sayfa açılır, oyun başlar.
 | --- | --- |
 | ![Sonuç ekranı](docs/screenshots/result.png) | ![Mobil menü](docs/screenshots/menu-mobile.png) |
 
+| Gece fihristi (menü) | Gece fihristi (oyun) |
+| --- | --- |
+| ![Gece menü](docs/screenshots/menu-dark.png) | ![Gece oyun](docs/screenshots/game-dark.png) |
+
 ## Nasıl oynanır
 
 Üç seçim yapılır ve oyun başlar:
@@ -53,6 +57,9 @@ seçenek doğru olamaz.
 - Cevaptan sonra yalnızca **yeni** bilgi: varsa kullanım örneği ve diğer anlamlar.
 - Klavye: `1–4` ile cevapla, `Enter` ile ilerle; cevap sonrası odak “Sonraki”de.
 - Ekran okuyucu için `aria-live` duyurusu (ör. “Yanlış. Doğru cevap: …”).
+- **Gündüz ve gece teması**: sistem tercihi izlenir, elle seçim kalıcıdır.
+- **Günün sözü**: menüde her gün seçkiden bir atasözü ve anlamı.
+- Soru geçişi destekleyen tarayıcılarda native view transition ile yapılır.
 - Tamamen istemci tarafı; sunucu, hesap, çerez ve izleme betiği yok.
 - Yazı tipleri kendi barındırılıyor; sayfa açılırken üçüncü tarafa istek gitmiyor.
 - Sonucu PNG olarak paylaşma (pano veya indirme).

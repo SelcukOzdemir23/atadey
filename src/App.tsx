@@ -4,6 +4,7 @@ import { ResultScreen } from "@/components/result/ResultScreen";
 import { ErrorScreen } from "@/components/states/ErrorScreen";
 import { LoadingScreen } from "@/components/states/LoadingScreen";
 import { useGameRun } from "@/hooks/useGameRun";
+import { useTheme } from "@/hooks/useTheme";
 
 /**
  * The whole app: pick a screen from the run state. All game rules live in
@@ -11,10 +12,11 @@ import { useGameRun } from "@/hooks/useGameRun";
  */
 function App() {
   const game = useGameRun();
+  const theme = useTheme();
 
   switch (game.screen) {
     case "menu":
-      return <MenuScreen onStart={game.start} />;
+      return <MenuScreen onStart={game.start} theme={theme.theme} onToggleTheme={theme.toggle} />;
 
     case "loading":
       return <LoadingScreen />;

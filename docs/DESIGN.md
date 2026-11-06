@@ -54,21 +54,29 @@ yazılmalı, yoksa renk sanılıp sessizce düşer.
 ## Renk
 
 Tek vurgu: **çivit mürekkep**. Yeşil/kırmızı yalnızca doğru/yanlış anlamında.
+İki mod var: **gündüz fihristi** (kâğıt) ve **gece fihristi** (mürekkep).
 
-| Token | HSL | Görev |
-| --- | --- | --- |
-| `--paper` | `210 24% 97%` | sayfa zemini (soğuk kâğıt) |
-| `--surface` | `0 0% 100%` | madde yüzeyi |
-| `--ink` | `216 30% 12%` | ana metin — saf siyah değil |
-| `--ink-soft` | `216 12% 40%` | ikincil metin |
-| `--rule` | `214 18% 86%` | ince çizgiler |
-| `--accent` | `218 68% 34%` | çivit: seçim, bağlantı, odak |
-| `--correct` | `152 55% 26%` | doğru |
-| `--wrong` | `4 62% 40%` | yanlış |
+| Token | Gündüz (HSL) | Gece (HSL) | Görev |
+| --- | --- | --- | --- |
+| `--paper` | `210 24% 97%` | `216 22% 7%` | sayfa zemini |
+| `--surface` | `0 0% 100%` | `216 18% 10%` | madde yüzeyi |
+| `--ink` | `216 30% 12%` | `210 22% 94%` | ana metin |
+| `--ink-soft` | `216 12% 40%` | `214 12% 66%` | ikincil metin |
+| `--rule` | `214 18% 86%` | `216 14% 21%` | ince çizgiler |
+| `--accent` | `218 68% 34%` | `212 85% 64%` | çivit: seçim, odak, CTA |
+| `--accent-wash` | `218 60% 95%` | `212 45% 18%` | harf rozetleri |
+| `--correct` | `152 55% 26%` | `152 48% 60%` | doğru |
+| `--wrong` | `4 62% 40%` | `4 78% 68%` | yanlış |
 
-Kontrast (ölçüldü, `prefers-reduced-motion` dahil tarayıcı denetimi): gövde
-metni `--ink` / `--paper` **15.8:1**, `--ink-soft` / `--paper` **5.6:1**,
-birincil düğme (beyaz / `--accent`) **8.9:1**, yanlış etiketi **6.5:1**.
+Mod seçimi üç katmanlı: `prefers-color-scheme` varsayılan, `data-theme`
+elle seçim (sistem tercihini ezer), seçim `localStorage`'da tutulur ve
+React açılmadan önce `index.html`'deki küçük betikle uygulanır (tema
+sıçraması yok). Değiştirme düğmesi menünün alt satırında, sessiz stilde.
+
+Kontrast (ölçüldü; hem gündüz hem gece tarayıcıda doğrulandı): gövde metni
+`--ink` / `--paper` **15.8:1** (gece **16.5:1**), `--ink-soft` **5.6:1**
+(gece **7.8:1**), birincil düğme **8.9:1** (gece **6.7:1**), yanlış etiketi
+**6.5:1**.
 **Seçenek geri bildirimi asla opaklıkla soluklaştırılmaz** — soluklaştırma
 kontrastı düşürür; sönükleştirme yerine çizgi, renk ve ikon kullanılır.
 
@@ -104,8 +112,12 @@ Kart iç dolgu 24 (mobilde 20), bölüm arası 32, ekran kenarı 16/24.
 Her satır: solda `label`, sağda seçenekler; hairline ayraç; seçili seçenek =
 dolu küçük kare + `--ink` metin, seçili olmayan `--ink-soft`. Seçenekler
 `radiogroup` semantiği taşır. Tek birincil düğme: **Oyuna başla**.
-Mobilde tek sütun; üç adımlık liste gizlenir, düğme **kaydırmadan görünür**
-(390×844'te 710. pikselde).
+Mobilde tek sütun; üç adımlık liste ve günün sözü gizlenir, düğme
+**kaydırmadan görünür** (390×844'te 710. pikselde).
+
+Kapak sütununun altında **günün sözü**: gerçek manifest seçkisinden tek bir
+atasözü, serif italik ve anlamı. Her gün değişir; veri uydurulmaz. Alt satırda
+geliştirici notu ve tema düğmesi (Gece/Gündüz).
 
 ### Oyun — “madde”
 
@@ -180,11 +192,13 @@ kart içinde kart, opaklıkla soluklaştırılmış geri bildirim.
 
 ## Doğrulama (Faz 2 sonu)
 
-1. Kontrast: ölçülen değerler yukarıda; hepsi WCAG AA üstünde.
+1. Kontrast: iki tema için de ölçüldü, hepsi WCAG AA üstünde.
 2. 390×844: “Oyuna başla” ilk ekranda görünüyor (710 px), yatay taşma yok.
 3. Yalnız klavyeyle oyun turu: `1–4` cevap, `Enter` ilerleme; odak cevap
    sonrası “Sonraki”de.
 4. Cevap sonrası `role="status"` duyurusu tek satır: “Yanlış. Doğru cevap: …”.
-5. `prefers-reduced-motion: reduce` → animasyon süresi 0.
+5. `prefers-reduced-motion: reduce` → animasyon 0, view transition yok.
 6. Dokunma hedefleri < 44px: 0.
 7. Örnek cümle yalnızca veride varsa basılıyor; atasözlerinde hiç yok.
+8. Tema: sistem tercihi izlenir, elle seçim kalıcıdır ve ilk boyamadan önce
+   uygulanır (sıçrama yok).

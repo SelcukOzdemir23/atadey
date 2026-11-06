@@ -24,7 +24,8 @@ const dataset: Dataset = { version: 1, entries: phrases };
 const manifest = {
   datasetVersion: 1,
   categories: {},
-  totals: { phrases: 12, definitions: 12, definitionsWithExample: 0 }
+  totals: { phrases: 12, definitions: 12, definitionsWithExample: 0 },
+  highlights: [{ text: "Damlaya damlaya göl olur", definition: "Küçük birikimler zamanla büyük sonuç verir." }]
 };
 
 /** Prompt → the option a player should click, per direction. */
@@ -85,6 +86,8 @@ describe("App", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     resetDataCache();
+    localStorage.clear();
+    delete document.documentElement.dataset.theme;
     mockFetch();
   });
 
@@ -101,6 +104,13 @@ describe("App", () => {
   it("shows the data counts once the manifest arrives", async () => {
     render(<App />);
     expect(await screen.findByText(/12 söz/)).toBeInTheDocument();
+  });
+
+  it("shows the proverb of the day from the manifest", async () => {
+    render(<App />);
+
+    expect(await screen.findByText("Günün sözü")).toBeInTheDocument();
+    expect(screen.getByText(/Damlaya damlaya göl olur/)).toBeInTheDocument();
   });
 
   it("starts a game with one question and four options", async () => {
@@ -224,6 +234,16 @@ describe("App", () => {
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Oyuna başla" })).toBeInTheDocument();
     });
+  });
+
+  it("switches to the night theme and remembers the choice", async () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Gece moduna geç" }));
+
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(localStorage.getItem("atadey.theme")).toBe("dark");
+    expect(screen.getByRole("button", { name: "Gündüz moduna geç" })).toBeInTheDocument();
   });
 
   it("offers a retry when the data cannot be loaded", async () => {

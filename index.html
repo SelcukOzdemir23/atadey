@@ -10,6 +10,15 @@
       content="Atasözleri ve deyimleri anlamlarıyla eşleştirerek Türkçe bilgini test et. İki yön, iki oyun tipi, 12.000'den fazla madde."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Tema sıçramasını önle: React açılmadan önce kayıtlı seçimi uygula.
+      try {
+        var storedTheme = localStorage.getItem("atadey.theme");
+        if (storedTheme === "dark" || storedTheme === "light") {
+          document.documentElement.dataset.theme = storedTheme;
+        }
+      } catch (error) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ChoiceGroup } from "@/components/menu/ChoiceGroup";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Wordmark } from "@/components/Wordmark";
 import { loadManifest } from "@/dataLoader";
 import { CATEGORY_LABEL, DIRECTION_LABEL, FORMAT_LABEL } from "@/lib/labels";
 import type { RunSettings } from "@/hooks/useGameRun";
+import type { Theme } from "@/hooks/useTheme";
 import type { GameDirection, GameFormat, GameMode } from "@/types";
 
 interface MenuScreenProps {
   onStart: (run: RunSettings) => void;
+  theme: Theme;
+  onToggleTheme: () => void;
 }
 
 const CATEGORY_CHOICES = (Object.keys(CATEGORY_LABEL) as GameMode[]).map((value) => ({
@@ -33,18 +37,27 @@ function formatCount(value: number): string {
   return value.toLocaleString("tr-TR");
 }
 
-export function MenuScreen({ onStart }: MenuScreenProps) {
+export function MenuScreen({ onStart, theme, onToggleTheme }: MenuScreenProps) {
   const [mode, setMode] = useState<GameMode>("atasozu");
   const [format, setFormat] = useState<GameFormat>("mistakes");
   const [direction, setDirection] = useState<GameDirection>("forward");
   const [counts, setCounts] = useState<{ phrases: number; definitions: number } | null>(null);
+  const [highlight, setHighlight] = useState<{ text: string; definition: string } | null>(null);
 
   useEffect(() => {
     let alive = true;
 
     loadManifest()
       .then((manifest) => {
-        if (alive) setCounts(manifest.totals);
+        if (!alive) return;
+
+        setCounts(manifest.totals);
+
+        const list = manifest.highlights ?? [];
+        if (list.length > 0) {
+          // One proverb per day, derived from the date — no network, no storage.
+          setHighlight(list[Math.floor(Date.now() / 86_400_000) % list.length]);
+        }
       })
       .catch(() => {
         // Counts are a nicety; the game reports loading failures itself.
@@ -84,6 +97,18 @@ export function MenuScreen({ onStart }: MenuScreenProps) {
               {`${formatCount(counts.phrases)} söz · ${formatCount(counts.definitions)} anlam`}
             </p>
           )}
+
+          {highlight && (
+            <figure className="mt-8 hidden lg:block">
+              <figcaption className="text-label font-medium uppercase text-ink-soft">
+                Günün sözü
+              </figcaption>
+              <blockquote className="measure mt-2 font-serif text-quote italic leading-snug text-ink">
+                “{highlight.text}”
+              </blockquote>
+              <p className="measure mt-1.5 text-sm text-ink-soft">{highlight.definition}</p>
+            </figure>
+          )}
         </section>
 
         <section
@@ -118,8 +143,9 @@ export function MenuScreen({ onStart }: MenuScreenProps) {
         </section>
       </div>
 
-      <footer className="mt-12 border-t border-rule pt-4 text-xs text-ink-soft">
-        Geliştirici: Müşerref Selçuk Özdemir
+      <footer className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-xs text-ink-soft">
+        <p>Geliştirici: Müşerref Selçuk Özdemir</p>
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
       </footer>
     </main>
   );

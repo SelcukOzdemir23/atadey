@@ -52,6 +52,14 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
 
 ### Eklendi
 
+- **Gece fihristi**: aynı token setinin koyu modu. Sistem tercihi varsayılan,
+  menüdeki sessiz düğmeyle elle seçilebilir; seçim `localStorage`'da tutulur
+  ve React açılmadan önce uygulanır (tema sıçraması yok). Kontrast iki modda
+  da ölçüldü (gövde 16.5:1 / 15.8:1).
+- **Günün sözü**: manifest'teki 24 sözlük seçkisinden her gün bir atasözü ve
+  anlamı menüde; seçki build'de deterministik üretiliyor.
+- Soru geçişi destekleyen tarayıcılarda `document.startViewTransition` ile;
+  sayfanın geri kalanı anında yenileniyor, `prefers-reduced-motion`'da düz.
 - **“Fihrist” arayüzü**: tek kaynaklı token seti (kâğıt/mürekkep/çivit), IBM Plex
   Serif + IBM Plex Sans (kendi barındırılan), 4px yarıçap, hairline çizgiler.
   Menü, oyun, sonuç ve hata ekranları yeniden yazıldı; `App.tsx` 674 satırdan

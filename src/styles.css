@@ -8,25 +8,85 @@
    ============================================================ */
 @layer base {
   :root {
+    /* "Gündüz fihristi" */
+    --light-paper: 210 24% 97%;
+    --light-surface: 0 0% 100%;
+    --light-ink: 216 30% 12%;
+    --light-ink-soft: 216 12% 40%;
+    --light-rule: 214 18% 86%;
+    --light-accent: 218 68% 34%;
+    --light-accent-foreground: 0 0% 100%;
+    --light-accent-wash: 218 60% 95%;
+    --light-correct: 152 55% 26%;
+    --light-correct-foreground: 0 0% 100%;
+    --light-wrong: 4 62% 40%;
+    --light-wrong-foreground: 0 0% 100%;
+
+    /* "Gece fihristi" — kâğıt mürekkebe döner, vurgu açılır. */
+    --dark-paper: 216 22% 7%;
+    --dark-surface: 216 18% 10%;
+    --dark-ink: 210 22% 94%;
+    --dark-ink-soft: 214 12% 66%;
+    --dark-rule: 216 14% 21%;
+    --dark-accent: 212 85% 64%;
+    --dark-accent-foreground: 216 40% 8%;
+    --dark-accent-wash: 212 45% 18%;
+    --dark-correct: 152 48% 60%;
+    --dark-correct-foreground: 150 40% 8%;
+    --dark-wrong: 4 78% 68%;
+    --dark-wrong-foreground: 4 45% 8%;
+
     color-scheme: light;
 
-    --paper: 210 24% 97%;
-    --surface: 0 0% 100%;
+    /* Tek eşleme noktası: aşağıdaki iki blok yalnızca hangi sete
+       bağlanacağını söyler. */
+    --paper: var(--light-paper);
+    --surface: var(--light-surface);
+    --ink: var(--light-ink);
+    --ink-soft: var(--light-ink-soft);
+    --rule: var(--light-rule);
+    --accent: var(--light-accent);
+    --accent-foreground: var(--light-accent-foreground);
+    --accent-wash: var(--light-accent-wash);
+    --correct: var(--light-correct);
+    --correct-foreground: var(--light-correct-foreground);
+    --wrong: var(--light-wrong);
+    --wrong-foreground: var(--light-wrong-foreground);
+  }
 
-    --ink: 216 30% 12%;
-    --ink-soft: 216 12% 40%;
+  /* Elle seçim (`data-theme`) sistem tercihini ezer. */
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: var(--dark-paper);
+    --surface: var(--dark-surface);
+    --ink: var(--dark-ink);
+    --ink-soft: var(--dark-ink-soft);
+    --rule: var(--dark-rule);
+    --accent: var(--dark-accent);
+    --accent-foreground: var(--dark-accent-foreground);
+    --accent-wash: var(--dark-accent-wash);
+    --correct: var(--dark-correct);
+    --correct-foreground: var(--dark-correct-foreground);
+    --wrong: var(--dark-wrong);
+    --wrong-foreground: var(--dark-wrong-foreground);
+  }
 
-    --rule: 214 18% 86%;
-
-    --accent: 218 68% 34%;
-    --accent-foreground: 0 0% 100%;
-    --accent-wash: 218 60% 95%;
-
-    --correct: 152 55% 26%;
-    --correct-foreground: 0 0% 100%;
-
-    --wrong: 4 62% 40%;
-    --wrong-foreground: 0 0% 100%;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: var(--dark-paper);
+      --surface: var(--dark-surface);
+      --ink: var(--dark-ink);
+      --ink-soft: var(--dark-ink-soft);
+      --rule: var(--dark-rule);
+      --accent: var(--dark-accent);
+      --accent-foreground: var(--dark-accent-foreground);
+      --accent-wash: var(--dark-accent-wash);
+      --correct: var(--dark-correct);
+      --correct-foreground: var(--dark-correct-foreground);
+      --wrong: var(--dark-wrong);
+      --wrong-foreground: var(--dark-wrong-foreground);
+    }
   }
 
   * {
