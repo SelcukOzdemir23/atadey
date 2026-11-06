@@ -15,20 +15,15 @@ interface ResultScreenProps {
   onMenu: () => void;
 }
 
-async function shareCard(node: HTMLElement, score: number): Promise<string> {
+async function downloadCard(node: HTMLElement, score: number): Promise<string> {
   const dataUrl = await toPng(node, { pixelRatio: 1, cacheBust: true });
-  const blob = await (await fetch(dataUrl)).blob();
 
-  try {
-    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
-    return "Görsel panoya kopyalandı.";
-  } catch {
-    const link = document.createElement("a");
-    link.download = `atadey-${score}-dogru.png`;
-    link.href = dataUrl;
-    link.click();
-    return "Görsel indirildi.";
-  }
+  const link = document.createElement("a");
+  link.download = `atadey-${score}-dogru.png`;
+  link.href = dataUrl;
+  link.click();
+
+  return "Görsel indirildi.";
 }
 
 export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }: ResultScreenProps) {
@@ -55,7 +50,7 @@ export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }
         await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
         await document.fonts?.ready;
 
-        const message = await shareCard(node, score);
+        const message = await downloadCard(node, score);
         if (!cancelled) setStatus(message);
       } catch {
         if (!cancelled) setStatus("Görsel oluşturulamadı. Yeniden dene.");
@@ -110,13 +105,20 @@ export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }
         </dl>
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Button onClick={onRetry}>Yeniden oyna</Button>
-        <Button variant="secondary" onClick={onMenu}>
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <Button className="w-full sm:w-auto" onClick={onRetry}>
+          Yeniden oyna
+        </Button>
+        <Button variant="secondary" className="w-full sm:w-auto" onClick={onMenu}>
           Ana menü
         </Button>
-        <Button variant="quiet" className="ml-auto" onClick={handleShare} disabled={sharing}>
-          {sharing ? "Hazırlanıyor…" : "Görseli paylaş"}
+        <Button
+          variant="quiet"
+          className="w-full justify-center sm:ml-auto sm:w-auto"
+          onClick={handleShare}
+          disabled={sharing}
+        >
+          {sharing ? "Hazırlanıyor…" : "Görseli indir"}
         </Button>
       </div>
 
