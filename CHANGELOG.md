@@ -5,6 +5,8 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-06
+
 ### Değişti
 
 - **Paylaşım her zaman indirir.** Panoya yazma, tarayıcı iznine ve desteğe göre
@@ -73,7 +75,14 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
 - **Kısa ekranlarda birincil eylem**: < 640px'te “Oyuna başla” yapışkan alt
   şeritte; 320×568'de de kaydırmadan erişilir.
 - Soru geçişi destekleyen tarayıcılarda `document.startViewTransition` ile;
-  sayfanın geri kalanı anında yenileniyor, `prefers-reduced-motion`'da düz.
+  soru değişiminde yalnızca kart, ekran değişiminde sayfanın tamamı yumuşuyor,
+  `prefers-reduced-motion`'da düz.
+- **Ekran geçişleri**: menü → oyun → sonuç akışı tek bir sayfa geçişiyle
+  birleşti; geçiş sırasında gelen ekranın kendi giriş animasyonu kapanıyor.
+- **Hata sınırı**: beklenmedik bir çizim hatası beyaz ekran bırakmıyor; aynı
+  kâğıt dilinde kısa bir açıklama ve “Sayfayı yenile” düğmesi çıkıyor.
+- Menü alt bilgisinde sürüm (`v1.0.0`), `package.json`'dan build sırasında
+  gömülüyor; ikinci bir elle güncellenen sürüm numarası yok.
 - **“Fihrist” arayüzü**: tek kaynaklı token seti (kâğıt/mürekkep/çivit), IBM Plex
   Serif + IBM Plex Sans (kendi barındırılan), 4px yarıçap, hairline çizgiler.
   Menü, oyun, sonuç ve hata ekranları yeniden yazıldı; `App.tsx` 674 satırdan

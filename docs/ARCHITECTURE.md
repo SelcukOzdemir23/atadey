@@ -4,12 +4,12 @@ Tek sayfa, tamamen istemci tarafı. Sunucu, hesap, veritabanı yok.
 
 ```
 index.html
-└── src/main.tsx
+└── src/main.tsx                  ErrorBoundary + yazı tipleri
     └── App.tsx                    ekran seçimi
         ├── components/menu/MenuScreen      kategori / oyun tipi / yön
         ├── components/game/GameScreen      ScoreStrip + soru + FeedbackBlock
         ├── components/result/ResultScreen  skor + paylaşma
-        └── components/states/*             yükleniyor / hata
+        └── components/states/*             yükleniyor / veri hatası
 
 src/hooks/useGameRun.ts          oyun durumu (reducer) + veri istekleri
 src/dataLoader.ts               veri yükleme + soru üretimi
@@ -99,7 +99,9 @@ değiştiğinde testlerin kırılmaması bunun içindir.
   davranışını ve derin bağlantıyı bedavaya getirmez; gerektiğinde eklenir.
 - **Global state yönetimi yok.** Tek ekran ağacı, tek `App`. Prop drilling
   rahatsız edici olduğunda context'e geçilir.
-- **Karanlık tema yok.** Palet tek: aydınlık “fihrist” yüzeyi. Tema eklemek
-  bütün token setini ikiye katlar; ihtiyaç doğunca yapılır.
+- **Tema tek token setinin eşlemesi.** `styles.css` iki paleti tanımlar;
+  `:root` yalnızca hangisinin bağlı olduğunu söyler, bileşenler ham renk bilmez.
+- **Hata sınırı tek yerde.** Beklenmedik çizim hatasını `ErrorBoundary` yakalar;
+  veri yükleme hatası ayrı bir ekran (`components/states/ErrorScreen`).
 - **Veri build zamanında üretilir**, çalışma anında dönüştürülmez: aynı girdi
   aynı oyunu verir, test edilebilir kalır.

@@ -120,7 +120,8 @@ hâlâ seçim yaparken (boşta) önceden yüklenir: ilk soru anında hazır olur
 
 Kapak sütununun altında **günün sözü**: gerçek manifest seçkisinden tek bir
 atasözü, serif italik ve anlamı. Her gün değişir; veri uydurulmaz. Alt satırda
-geliştirici notu ve tema düğmesi (Gece/Gündüz).
+geliştirici notu, sürüm (`package.json`'dan build sırasında gömülür — elle
+senkron tutulan ikinci bir numara yok) ve tema düğmesi (Gece/Gündüz).
 
 ### Oyun — “madde”
 
@@ -161,10 +162,18 @@ gece modunda koyu fiş üretilir.
 Tek cümle + tek düğme. “Veri yüklenemedi. Bağlantını kontrol edip yeniden
 dene.” — suçlama yok, teknik ayrıntı konsolda.
 
+Beklenmedik bir çizim hatası beyaz ekran bırakmaz: `ErrorBoundary` aynı kâğıt
+dilinde kısa bir açıklama ve **Sayfayı yenile** düğmesi gösterir; hata yine
+konsola düşer.
+
 ## Hareket
 
 - 160–200ms, `cubic-bezier(0.22, 1, 0.36, 1)`; yalnız `opacity` ve `translateY`
   (≤ 8px). Bounce, elastic, sonsuz döngü yok.
+- İki geçiş kapsamı var: **soru değişimi** yalnızca kartı canlandırır (skor
+  şeridi yerinde kalır, titremez), **ekran değişimi** (menü → oyun → sonuç)
+  sayfanın tamamını yumuşak geçirir. Geçiş sırasında gelen ekranın kendi giriş
+  animasyonu kapanır; iki hareket üst üste binmez.
 - Kart geçişinde tek giriş animasyonu; seçenekler kademeli belirmez.
 - `prefers-reduced-motion: reduce` → tümü kapalı, anlık geçiş.
 

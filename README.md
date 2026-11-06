@@ -4,6 +4,7 @@
 
 [![CI](https://github.com/SelcukOzdemir23/atadey/actions/workflows/ci.yml/badge.svg)](https://github.com/SelcukOzdemir23/atadey/actions/workflows/ci.yml)
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+[![Sürüm: 1.0.0](https://img.shields.io/badge/s%C3%BCr%C3%BCm-1.0.0-1f6feb)](CHANGELOG.md)
 [![Canlı site](https://img.shields.io/badge/canl%C4%B1%20site-atadey-1f6feb)](https://selcukozdemir23.github.io/atadey/)
 
 </div>
@@ -39,7 +40,7 @@ Paylaşım görseli (1080×1920, uygulamadan üretilmiş):
 
 Her soruda dört seçenekten biri doğrudur. Cevaptan sonra doğru anlam, varsa
 kullanım örneğiyle birlikte gösterilir; örnek yoksa satır hiç basılmaz. Oyun
-sonunda skorun görseli indirilebilir veya panoya kopyalanabilir.
+sonunda skorun 9:16 görseli dosya olarak indirilebilir.
 
 ## Veri
 
@@ -65,10 +66,12 @@ seçenek doğru olamaz.
 - **Günün sözü**: menüde her gün seçkiden bir atasözü ve anlamı.
 - **9:16 hikâye görseli**: sonuç, 1080×1920 dikey kompozisyon olarak üretilir
   ve her zaman dosya olarak iner.
-- Soru geçişi destekleyen tarayıcılarda native view transition ile yapılır.
+- Geçişler native view transition ile: soru değişiminde kart, menü → oyun →
+  sonuç akışında sayfanın tamamı yumuşar; azaltılmış hareket tercihinde düz.
 - Tamamen istemci tarafı; sunucu, hesap, çerez ve izleme betiği yok.
 - Yazı tipleri kendi barındırılıyor; sayfa açılırken üçüncü tarafa istek gitmiyor.
-- Sonucu PNG olarak indirme (1080×1920 hikâye formatı).
+- Beklenmedik bir çizim hatasında beyaz ekran yerine kısa açıklama ve yenileme
+  düğmesi.
 
 ## Kurulum
 
