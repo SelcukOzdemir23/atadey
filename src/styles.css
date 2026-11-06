@@ -155,7 +155,8 @@
 }
 
 /* ============================================================
-   View transitions — yalnızca soru kartı; geri kalan anlık.
+   View transitions — soru kartı kendi içinde, ekran değişimi
+   sayfanın tamamında yumuşar; geri kalan her şey anlık.
    ============================================================ */
 @keyframes vt-fade-out {
   to {
@@ -182,10 +183,21 @@
   ::view-transition-new(question-card) {
     animation: vt-fade-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
+
+  /* Screen changes: the whole page crossfades, slightly quicker out than in. */
+  html[data-vt="screen"]::view-transition-old(root) {
+    animation: vt-fade-out 140ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  html[data-vt="screen"]::view-transition-new(root) {
+    animation: vt-fade-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
 }
 
-/* Geçiş sürerken kartın kendi giriş animasyonu çalışmasın. */
-[data-view-transition="1"] .question-card {
+/* Geçiş sürerken gelen ekranın kendi giriş animasyonu çalışmasın:
+   kart değişimi kartı, ekran değişimi sayfayı zaten canlandırıyor. */
+html[data-vt="card"] .question-card,
+html[data-vt="screen"] .animate-enter {
   animation: none;
 }
 

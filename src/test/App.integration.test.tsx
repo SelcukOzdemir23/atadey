@@ -170,7 +170,12 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: forwardAnswers.get(first)! }));
     fireEvent.click(await screen.findByRole("button", { name: "Sonraki" }));
 
-    expect(startViewTransition).toHaveBeenCalledTimes(1);
+    // One transition for loading → playing, one for the card swap; the mode
+    // travels on the root element so the CSS knows what to animate.
+    expect(startViewTransition).toHaveBeenCalledTimes(2);
+    expect(document.documentElement.dataset.vt).toBe("card");
+
+    await waitFor(() => expect(document.documentElement.dataset.vt).toBeUndefined());
 
     delete (document as unknown as { startViewTransition?: unknown }).startViewTransition;
   });

@@ -14,10 +14,13 @@ import "@fontsource/ibm-plex-serif/latin-400-italic.css";
 import "@fontsource/ibm-plex-serif/latin-ext-400-italic.css";
 
 import App from "./App";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import "./styles.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </React.StrictMode>
 );

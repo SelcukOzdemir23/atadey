@@ -111,11 +111,14 @@ type DocumentWithTransitions = Document & {
 };
 
 /**
- * Swaps the question inside a native view transition when the browser has one.
- * Everything else (including the score strip) swaps instantly, so only the
- * card itself crossfades; reduced-motion users get the plain swap.
+ * Runs an update inside a native view transition when the browser has one.
+ *
+ * `mode: "card"` transitions only the question card (the page's chrome swaps
+ * instantly, so the score never flickers). `mode: "screen"` crossfades the
+ * whole page — used when one screen replaces another. Reduced-motion users
+ * always get the plain swap.
  */
-function runWithViewTransition(update: () => void): void {
+function runWithViewTransition(update: () => void, mode: "card" | "screen" = "card"): void {
   const doc = document as DocumentWithTransitions;
   const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
@@ -124,11 +127,11 @@ function runWithViewTransition(update: () => void): void {
     return;
   }
 
-  document.documentElement.dataset.viewTransition = "1";
+  document.documentElement.dataset.vt = mode;
 
   const transition = doc.startViewTransition(() => flushSync(update));
   void transition.finished.finally(() => {
-    delete document.documentElement.dataset.viewTransition;
+    delete document.documentElement.dataset.vt;
   });
 }
 
@@ -153,7 +156,13 @@ export function useGameRun() {
           exhausted.current = true;
         }
 
-        dispatch(append ? { type: "APPENDED", questions } : { type: "LOADED", questions });
+        const nextAction = append
+          ? ({ type: "APPENDED", questions } as const)
+          : ({ type: "LOADED", questions } as const);
+
+        // Loading → playing is a screen change, so it fades as a whole.
+        if (append) dispatch(nextAction);
+        else runWithViewTransition(() => dispatch(nextAction), "screen");
       } catch (error) {
         // A failed top-up keeps the current question on screen; only the first
         // load is fatal for the run.
@@ -189,9 +198,15 @@ export function useGameRun() {
 
   const start = useCallback((run: RunSettings) => dispatch({ type: "START", run }), []);
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
-  const next = useCallback(() => runWithViewTransition(() => dispatch({ type: "NEXT" })), []);
+  const next = useCallback(
+    () => runWithViewTransition(() => dispatch({ type: "NEXT" }), state.runOver ? "screen" : "card"),
+    [state.runOver]
+  );
   const retry = useCallback(() => dispatch({ type: "RETRY" }), []);
-  const toMenu = useCallback(() => dispatch({ type: "MENU" }), []);
+  const toMenu = useCallback(
+    () => runWithViewTransition(() => dispatch({ type: "MENU" }), "screen"),
+    []
+  );
 
   const question = state.questions[state.index];
   const isCorrect = state.selected === null || !question ? null : state.selected === question.answer;

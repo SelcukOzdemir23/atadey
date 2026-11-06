@@ -164,7 +164,12 @@ export function MenuScreen({ onStart, theme, onToggleTheme }: MenuScreenProps) {
 
       <footer className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-rule pt-4 text-xs text-ink-soft">
         <p>Geliştirici: Müşerref Selçuk Özdemir</p>
-        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        <div className="flex items-center gap-4">
+          <span className="tabular" title="Sürüm">
+            v{__APP_VERSION__}
+          </span>
+          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+        </div>
       </footer>
     </main>
   );
