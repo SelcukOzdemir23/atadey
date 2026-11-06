@@ -130,16 +130,17 @@ export function MenuScreen({ onStart, theme, onToggleTheme }: MenuScreenProps) {
             />
           </div>
 
-          <Button
-            className="mt-6 w-full"
-            onClick={() => onStart({ mode, format, direction })}
-          >
-            Oyuna başla
-          </Button>
-
           <p className="mt-3 text-sm text-ink-soft" aria-live="polite">
             {DIRECTION_HINT[direction]}
           </p>
+
+          {/* On short phones the form is taller than the viewport; the primary
+              action stays reachable instead of falling below the fold. */}
+          <div className="sticky bottom-0 z-10 -mx-5 mt-4 border-t border-rule bg-paper px-5 py-3 sm:static sm:mx-0 sm:mt-6 sm:border-0 sm:bg-transparent sm:p-0">
+            <Button className="w-full" onClick={() => onStart({ mode, format, direction })}>
+              Oyuna başla
+            </Button>
+          </div>
         </section>
       </div>
 
