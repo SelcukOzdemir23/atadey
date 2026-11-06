@@ -146,6 +146,25 @@ describe("App", () => {
     expect(await screen.findByRole("button", { name: "Sonraki" })).toBeInTheDocument();
   });
 
+  it("swaps questions inside a view transition when the browser supports it", async () => {
+    const startViewTransition = vi.fn((callback: () => void) => {
+      callback();
+      return { finished: Promise.resolve() };
+    });
+    Object.assign(document, { startViewTransition });
+
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Oyuna başla" }));
+
+    const first = await currentPrompt();
+    fireEvent.click(screen.getByRole("button", { name: forwardAnswers.get(first)! }));
+    fireEvent.click(await screen.findByRole("button", { name: "Sonraki" }));
+
+    expect(startViewTransition).toHaveBeenCalledTimes(1);
+
+    delete (document as unknown as { startViewTransition?: unknown }).startViewTransition;
+  });
+
   it("asks the phrase in reverse mode", async () => {
     render(<App />);
     chooseRadio("Anlamdan söze");

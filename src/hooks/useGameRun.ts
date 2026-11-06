@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef } from "react";
+import { flushSync } from "react-dom";
 import { generateQuestionBatch } from "@/dataLoader";
 import { MAX_MISTAKES, MAX_QUESTIONS } from "@/lib/labels";
 import type { GameDirection, GameFormat, GameMode, Question } from "@/types";
@@ -101,6 +102,36 @@ function reducer(state: GameState, action: Action): GameState {
 
 const BUFFER_AHEAD = 3;
 
+interface ViewTransition {
+  finished: Promise<void>;
+}
+
+type DocumentWithTransitions = Document & {
+  startViewTransition?: (callback: () => void) => ViewTransition;
+};
+
+/**
+ * Swaps the question inside a native view transition when the browser has one.
+ * Everything else (including the score strip) swaps instantly, so only the
+ * card itself crossfades; reduced-motion users get the plain swap.
+ */
+function runWithViewTransition(update: () => void): void {
+  const doc = document as DocumentWithTransitions;
+  const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+  if (!doc.startViewTransition || reduced) {
+    update();
+    return;
+  }
+
+  document.documentElement.dataset.viewTransition = "1";
+
+  const transition = doc.startViewTransition(() => flushSync(update));
+  void transition.finished.finally(() => {
+    delete document.documentElement.dataset.viewTransition;
+  });
+}
+
 export function useGameRun() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const loading = useRef(false);
@@ -158,7 +189,7 @@ export function useGameRun() {
 
   const start = useCallback((run: RunSettings) => dispatch({ type: "START", run }), []);
   const answer = useCallback((option: string) => dispatch({ type: "ANSWER", option }), []);
-  const next = useCallback(() => dispatch({ type: "NEXT" }), []);
+  const next = useCallback(() => runWithViewTransition(() => dispatch({ type: "NEXT" })), []);
   const retry = useCallback(() => dispatch({ type: "RETRY" }), []);
   const toMenu = useCallback(() => dispatch({ type: "MENU" }), []);
 

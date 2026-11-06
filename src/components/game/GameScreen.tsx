@@ -92,7 +92,7 @@ export function GameScreen({
         score={score}
       />
 
-      <section key={question.id} className="animate-enter">
+      <section key={question.id} className="question-card animate-enter">
         <h1
           className={cn(
             "font-serif text-ink",
