@@ -58,6 +58,10 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
   da ölçüldü (gövde 16.5:1 / 15.8:1).
 - **Günün sözü**: manifest'teki 24 sözlük seçkisinden her gün bir atasözü ve
   anlamı menüde; seçki build'de deterministik üretiliyor.
+- **Paylaşım görseli yenilendi**: 1080×1920 dikey kompozisyon, aktif temanın
+  renkleriyle; kart yalnızca yakalama anında DOM'a giriyor.
+- **Kısa ekranlarda birincil eylem**: < 640px'te “Oyuna başla” yapışkan alt
+  şeritte; 320×568'de de kaydırmadan erişilir.
 - Soru geçişi destekleyen tarayıcılarda `document.startViewTransition` ile;
   sayfanın geri kalanı anında yenileniyor, `prefers-reduced-motion`'da düz.
 - **“Fihrist” arayüzü**: tek kaynaklı token seti (kâğıt/mürekkep/çivit), IBM Plex

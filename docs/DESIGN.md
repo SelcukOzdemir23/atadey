@@ -112,8 +112,9 @@ Kart iç dolgu 24 (mobilde 20), bölüm arası 32, ekran kenarı 16/24.
 Her satır: solda `label`, sağda seçenekler; hairline ayraç; seçili seçenek =
 dolu küçük kare + `--ink` metin, seçili olmayan `--ink-soft`. Seçenekler
 `radiogroup` semantiği taşır. Tek birincil düğme: **Oyuna başla**.
-Mobilde tek sütun; üç adımlık liste ve günün sözü gizlenir, düğme
-**kaydırmadan görünür** (390×844'te 710. pikselde).
+Mobilde tek sütun; üç adımlık liste ve günün sözü gizlenir. “Oyuna başla”
+< 640px'te **yapışkan alt şeritte** durur (kâğıt zemin + üst çizgi), böylece
+320×568 gibi kısa ekranlarda da kaydırmadan erişilir; ≥ 640px'te normal akışta.
 
 Kapak sütununun altında **günün sözü**: gerçek manifest seçkisinden tek bir
 atasözü, serif italik ve anlamı. Her gün değişir; veri uydurulmaz. Alt satırda
@@ -139,9 +140,17 @@ geliştirici notu ve tema düğmesi (Gece/Gündüz).
 
 Skor (serif `hero`, tabular), üç satır döküm (doğru · yanlış · oran), sonra
 eylemler: `Yeniden oyna` (birincil), `Ana menü` (ikincil), `Görseli paylaş`
-(üçüncül). Paylaşım, ekrandaki kartın kendisini 2× çözünürlükte PNG'ye
-çevirir: pano destekleniyorsa kopyalar, yoksa indirir; sonuç `role="status"`
-ile duyurulur.
+(üçüncül).
+
+### Paylaşım görseli
+
+Paylaş, ekrandaki kartın kopyası değil: **1080×1920 (9:16)** kendi
+kompozisyonu. Üstte kelime markası ve kural, ortada büyük skor + döküm +
+başarı çubuğu, altta adres ve tek satır tanım. Kart yalnızca paylaşım
+sırasında DOM'a girer: 1080×1920'lik gizli bir alt ağacı sürekli taşımak
+ve metni iki kez DOM'a yazmak gereksiz. Yakalanan düğüm (0,0)'da durur —
+ekran dışına konumlanmış bir düğüm html-to-image'da boş çıkar. Renkler aktif
+temadan gelir; gece modunda koyu fiş üretilir.
 
 ### Hata
 

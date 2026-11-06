@@ -23,6 +23,10 @@ oyunu. Kurulum yok, sunucu yok, hesap yok: sayfa açılır, oyun başlar.
 | --- | --- |
 | ![Gece menü](docs/screenshots/menu-dark.png) | ![Gece oyun](docs/screenshots/game-dark.png) |
 
+Paylaşım görseli (1080×1920, uygulamadan üretilmiş):
+
+![Paylaşım görseli](docs/screenshots/share.png)
+
 ## Nasıl oynanır
 
 Üç seçim yapılır ve oyun başlar:
@@ -59,6 +63,7 @@ seçenek doğru olamaz.
 - Ekran okuyucu için `aria-live` duyurusu (ör. “Yanlış. Doğru cevap: …”).
 - **Gündüz ve gece teması**: sistem tercihi izlenir, elle seçim kalıcıdır.
 - **Günün sözü**: menüde her gün seçkiden bir atasözü ve anlamı.
+- **9:16 hikâye görseli**: sonuç, 1080×1920 dikey kompozisyon olarak üretilir.
 - Soru geçişi destekleyen tarayıcılarda native view transition ile yapılır.
 - Tamamen istemci tarafı; sunucu, hesap, çerez ve izleme betiği yok.
 - Yazı tipleri kendi barındırılıyor; sayfa açılırken üçüncü tarafa istek gitmiyor.

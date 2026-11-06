@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
+import { ShareCard } from "@/components/result/ShareCard";
 import { Wordmark } from "@/components/Wordmark";
 import type { RunSettings } from "@/hooks/useGameRun";
 import { CATEGORY_LABEL, DIRECTION_LABEL, FORMAT_LABEL } from "@/lib/labels";
@@ -15,7 +16,7 @@ interface ResultScreenProps {
 }
 
 async function shareCard(node: HTMLElement, score: number): Promise<string> {
-  const dataUrl = await toPng(node, { pixelRatio: 2, cacheBust: true });
+  const dataUrl = await toPng(node, { pixelRatio: 1, cacheBust: true });
   const blob = await (await fetch(dataUrl)).blob();
 
   try {
@@ -31,31 +32,57 @@ async function shareCard(node: HTMLElement, score: number): Promise<string> {
 }
 
 export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }: ResultScreenProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const shareCardRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
+  const [preparing, setPreparing] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const accuracy = answered > 0 ? Math.round((score / answered) * 100) : 0;
 
-  async function handleShare() {
-    if (!cardRef.current) return;
+  // The share card is mounted only while capturing: a 1080×1920 subtree has no
+  // business sitting in the DOM (and duplicating text) the rest of the time.
+  useEffect(() => {
+    if (!preparing) return;
 
+    const node = shareCardRef.current;
+    if (!node) return;
+
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        // Let the freshly mounted card paint and the webfonts settle; a capture
+        // taken in the same tick comes out blank.
+        await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+        await document.fonts?.ready;
+
+        const message = await shareCard(node, score);
+        if (!cancelled) setStatus(message);
+      } catch {
+        if (!cancelled) setStatus("Görsel oluşturulamadı. Yeniden dene.");
+      } finally {
+        if (!cancelled) {
+          setPreparing(false);
+          setSharing(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [preparing, score]);
+
+  function handleShare() {
     setSharing(true);
     setStatus(null);
-
-    try {
-      setStatus(await shareCard(cardRef.current, score));
-    } catch {
-      setStatus("Görsel oluşturulamadı. Yeniden dene.");
-    } finally {
-      setSharing(false);
-    }
+    setPreparing(true);
   }
 
   return (
     <main className="mx-auto flex min-h-[100dvh] w-full max-w-[560px] flex-col justify-center px-5 py-10 sm:py-16">
       <h1 className="sr-only">Sonuç: {score} doğru cevap</h1>
 
-      <div ref={cardRef} className="animate-enter border border-rule bg-surface p-7 sm:p-9">
+      <div className="animate-enter border border-rule bg-surface p-7 sm:p-9">
         <Wordmark className="text-lead" />
 
         <p className="mt-7 text-label font-medium uppercase text-ink-soft">
@@ -96,6 +123,16 @@ export function ResultScreen({ run, score, answered, mistakes, onRetry, onMenu }
       <p role="status" aria-live="polite" className="mt-3 text-sm text-ink-soft">
         {status}
       </p>
+
+      {preparing && (
+        <ShareCard
+          ref={shareCardRef}
+          run={run}
+          score={score}
+          answered={answered}
+          mistakes={mistakes}
+        />
+      )}
     </main>
   );
 }
