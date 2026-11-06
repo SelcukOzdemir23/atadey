@@ -14,6 +14,11 @@ updates:
           - "@types/react-dom"
       dev-dependencies:
         dependency-type: development
+    ignore:
+      # TypeScript 7 is not supported by typescript-eslint yet; take it
+      # manually once the toolchain catches up.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
