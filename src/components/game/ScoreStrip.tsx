@@ -53,10 +53,10 @@ export function ScoreStrip({
 
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-3">
-          <p className="truncate text-label font-medium uppercase text-ink-soft">
+          <p className="text-label font-medium uppercase leading-tight text-ink-soft">
             {CATEGORY_LABEL[mode]} · {DIRECTION_LABEL[direction]}
           </p>
-          <p className="shrink-0 text-sm text-ink-soft">
+          <p className="shrink-0 whitespace-nowrap text-sm text-ink-soft">
             <span className="tabular text-base font-semibold text-ink">{score}</span> doğru
           </p>
         </div>

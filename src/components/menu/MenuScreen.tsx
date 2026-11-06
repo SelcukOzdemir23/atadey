@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChoiceGroup } from "@/components/menu/ChoiceGroup";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Wordmark } from "@/components/Wordmark";
-import { loadManifest } from "@/dataLoader";
+import { loadManifest, loadPool } from "@/dataLoader";
 import { CATEGORY_LABEL, DIRECTION_LABEL, FORMAT_LABEL } from "@/lib/labels";
 import type { RunSettings } from "@/hooks/useGameRun";
 import type { Theme } from "@/hooks/useTheme";
@@ -67,6 +67,24 @@ export function MenuScreen({ onStart, theme, onToggleTheme }: MenuScreenProps) {
       alive = false;
     };
   }, []);
+
+  // Warm the selected category while the visitor is still choosing, so the
+  // first question is ready the moment they press play.
+  useEffect(() => {
+    const prefetch = () => {
+      void loadPool(mode).catch(() => {
+        // A failed prefetch is invisible: the game reports the real error.
+      });
+    };
+
+    if (typeof window.requestIdleCallback === "function") {
+      const handle = window.requestIdleCallback(prefetch, { timeout: 2500 });
+      return () => window.cancelIdleCallback(handle);
+    }
+
+    const handle = window.setTimeout(prefetch, 1200);
+    return () => window.clearTimeout(handle);
+  }, [mode]);
 
   return (
     <main className="mx-auto flex min-h-[100dvh] w-full max-w-[1040px] flex-col px-5 py-10 sm:px-8 sm:py-14 lg:py-20">
@@ -136,7 +154,7 @@ export function MenuScreen({ onStart, theme, onToggleTheme }: MenuScreenProps) {
 
           {/* On short phones the form is taller than the viewport; the primary
               action stays reachable instead of falling below the fold. */}
-          <div className="sticky bottom-0 z-10 -mx-5 mt-4 border-t border-rule bg-paper px-5 py-3 sm:static sm:mx-0 sm:mt-6 sm:border-0 sm:bg-transparent sm:p-0">
+          <div className="pb-safe sticky bottom-0 z-10 -mx-5 mt-4 border-t border-rule bg-paper px-5 py-3 sm:static sm:mx-0 sm:mt-6 sm:border-0 sm:bg-transparent sm:p-0">
             <Button className="w-full" onClick={() => onStart({ mode, format, direction })}>
               Oyuna başla
             </Button>

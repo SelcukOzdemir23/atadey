@@ -146,6 +146,14 @@
   }
 }
 
+/* iOS home-indicator clearance for the sticky mobile action bar. Scoped to the
+   mobile breakpoint so the desktop layout keeps its own padding. */
+@media (max-width: 639.98px) {
+  .pb-safe {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ============================================================
    View transitions — yalnızca soru kartı; geri kalan anlık.
    ============================================================ */
