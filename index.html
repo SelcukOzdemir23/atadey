@@ -2,7 +2,7 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#f7f7f9" />
     <title>AtaDey — Atasözü ve Deyim Oyunu</title>
     <meta
@@ -10,6 +10,18 @@
       content="Atasözleri ve deyimleri anlamlarıyla eşleştirerek Türkçe bilgini test et. İki yön, iki oyun tipi, 12.000'den fazla madde."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AtaDey" />
+    <meta property="og:title" content="AtaDey — Atasözü ve Deyim Oyunu" />
+    <meta
+      property="og:description"
+      content="Atasözlerini ve deyimleri anlamlarıyla eşleştir. 12.695 söz, 14.872 anlam, kurulum yok."
+    />
+    <meta property="og:image" content="https://selcukozdemir23.github.io/atadey/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script>
       // Tema sıçramasını önle: React açılmadan önce kayıtlı seçimi uygula.
       try {
@@ -22,6 +34,11 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; padding: 24px">
+        AtaDey tarayıcıda çalışan bir oyun; JavaScript kapalıyken oynanamıyor.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -7,6 +7,16 @@ Bu proje [Keep a Changelog](https://keepachangelog.com/tr/1.1.0/) biçimini ve
 
 ### Değişti
 
+- **Paylaşım her zaman indirir.** Panoya yazma, tarayıcı iznine ve desteğe göre
+  değişiyordu; artık `atadey-<skor>-dogru.png` doğrudan indiriliyor.
+- **Mobil ince ayar**: 320px'te oyun şeridindeki kategori · yön etiketi
+  kırpılmıyor (sarar), sonuç eylemleri mobilde tam genişlikte yığılıyor,
+  yapışkan menü düğmesi iOS güvenli alan payını bırakıyor.
+- **Açılış hızı**: menüde seçili kategori boşta önceden yükleniyor; ilk soru
+  anında hazır.
+- **Sosyal kart**: `og:image` 1200×630 kart ve Twitter kart meta'ları eklendi;
+  JavaScript kapalıyken `noscript` notu görünüyor.
+
 - Veri artık notebook yerine tek bir Node hattıyla üretiliyor
   (`scripts/build-data.mjs`): şema doğrulaması, kazıma artığı temizliği
   (başlık satırları, sözlük etiketleri, sondaki ayraçlar), tekrar eden tanım

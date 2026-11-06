@@ -63,11 +63,12 @@ seçenek doğru olamaz.
 - Ekran okuyucu için `aria-live` duyurusu (ör. “Yanlış. Doğru cevap: …”).
 - **Gündüz ve gece teması**: sistem tercihi izlenir, elle seçim kalıcıdır.
 - **Günün sözü**: menüde her gün seçkiden bir atasözü ve anlamı.
-- **9:16 hikâye görseli**: sonuç, 1080×1920 dikey kompozisyon olarak üretilir.
+- **9:16 hikâye görseli**: sonuç, 1080×1920 dikey kompozisyon olarak üretilir
+  ve her zaman dosya olarak iner.
 - Soru geçişi destekleyen tarayıcılarda native view transition ile yapılır.
 - Tamamen istemci tarafı; sunucu, hesap, çerez ve izleme betiği yok.
 - Yazı tipleri kendi barındırılıyor; sayfa açılırken üçüncü tarafa istek gitmiyor.
-- Sonucu PNG olarak paylaşma (pano veya indirme).
+- Sonucu PNG olarak indirme (1080×1920 hikâye formatı).
 
 ## Kurulum
 

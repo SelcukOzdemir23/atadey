@@ -113,8 +113,10 @@ Her satır: solda `label`, sağda seçenekler; hairline ayraç; seçili seçenek
 dolu küçük kare + `--ink` metin, seçili olmayan `--ink-soft`. Seçenekler
 `radiogroup` semantiği taşır. Tek birincil düğme: **Oyuna başla**.
 Mobilde tek sütun; üç adımlık liste ve günün sözü gizlenir. “Oyuna başla”
-< 640px'te **yapışkan alt şeritte** durur (kâğıt zemin + üst çizgi), böylece
-320×568 gibi kısa ekranlarda da kaydırmadan erişilir; ≥ 640px'te normal akışta.
+< 640px'te **yapışkan alt şeritte** durur (kâğıt zemin + üst çizgi, iOS
+güvenli alan payı ile), böylece 320×568 gibi kısa ekranlarda da kaydırmadan
+erişilir; ≥ 640px'te normal akışta. Seçili kategori menüdeyken, ziyaretçi
+hâlâ seçim yaparken (boşta) önceden yüklenir: ilk soru anında hazır olur.
 
 Kapak sütununun altında **günün sözü**: gerçek manifest seçkisinden tek bir
 atasözü, serif italik ve anlamı. Her gün değişir; veri uydurulmaz. Alt satırda
@@ -146,11 +148,13 @@ eylemler: `Yeniden oyna` (birincil), `Ana menü` (ikincil), `Görseli paylaş`
 
 Paylaş, ekrandaki kartın kopyası değil: **1080×1920 (9:16)** kendi
 kompozisyonu. Üstte kelime markası ve kural, ortada büyük skor + döküm +
-başarı çubuğu, altta adres ve tek satır tanım. Kart yalnızca paylaşım
-sırasında DOM'a girer: 1080×1920'lik gizli bir alt ağacı sürekli taşımak
-ve metni iki kez DOM'a yazmak gereksiz. Yakalanan düğüm (0,0)'da durur —
-ekran dışına konumlanmış bir düğüm html-to-image'da boş çıkar. Renkler aktif
-temadan gelir; gece modunda koyu fiş üretilir.
+başarı çubuğu, altta adres ve tek satır tanım. Görsel **her zaman dosya olarak
+inir** (`atadey-<skor>-dogru.png`); pano iznine ve tarayıcıya göre değişen
+clipboard davranışına güvenilmiyor. Kart yalnızca yakalama sırasında DOM'a
+girer: 1080×1920'lik gizli bir alt ağacı sürekli taşımak ve metni iki kez
+DOM'a yazmak gereksiz. Yakalanan düğüm (0,0)'da durur — ekran dışına
+konumlanmış bir düğüm html-to-image'da boş çıkar. Renkler aktif temadan gelir;
+gece modunda koyu fiş üretilir.
 
 ### Hata
 
